@@ -9,7 +9,7 @@
     
     <title>
         
-            Hello World |
+            使用NodeJS进行截图 |
         
         Tsccai&#39;s Blog
     </title>
@@ -124,7 +124,7 @@
     <div class="article-content-container">
 
         <div class="article-title">
-            <span class="title-hover-animation">Hello World</span>
+            <span class="title-hover-animation">使用NodeJS进行截图</span>
         </div>
 
         
@@ -141,10 +141,29 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fas fa-edit"></i>&nbsp;
-        <span class="pc">2022-06-06 22:44:20</span>
-        <span class="mobile">2022-06-06 22:44</span>
+        <span class="pc">2022-06-08 20:13:55</span>
+        <span class="mobile">2022-06-08 20:13</span>
     </span>
     
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NodeJS/">NodeJS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%88%AA%E5%9B%BE/">截图</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
     
 
     
@@ -159,19 +178,31 @@
         
 
         <div class="article-content markdown-body">
-            <p>Welcome to <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/" >Hexo<i class="fas fa-external-link-alt"></i></a>! This is your very first post. Check <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/docs/" >documentation<i class="fas fa-external-link-alt"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html" >troubleshooting<i class="fas fa-external-link-alt"></i></a> or you can ask me on <a class="link"   target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues" >GitHub<i class="fas fa-external-link-alt"></i></a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+            <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>工作中，产生了这样一个需求：想要访问一个网站，并在3个及以上的URL下全屏截图保存到本地。初步了解了一下这方面的现成方案：</p>
+<ol>
+<li>使用Chrome –headless</li>
+<li>使用puttepeer，这是方案1的进阶版</li>
+</ol>
+<p>但是很可惜，经过进一步的与对方沟通，他们要求不仅是把网页截图下来，还需要把浏览器，包括地址栏都要截取下来，防止上级部门怪罪下来说他们伪造截图。这样上面的两种方法就都行不通了——它们都只能截取网页本身，也就是<code>&lt;html&gt;  …… &lt;/html&gt;</code>标签之间，渲染后的图片。<br>想着本来都已经把puttepeer安装上了，也懒得转Python了，索性就NodeJS三两下搞定吧。<span id="more"></span> </p>
+<h3 id="依赖项及说明"><a href="#依赖项及说明" class="headerlink" title="依赖项及说明"></a>依赖项及说明</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">├── cheerio@1.0.0-rc.11</span><br><span class="line">├── open@8.4.0</span><br><span class="line">├── screenshot-desktop@1.12.7</span><br><span class="line">└── sync-request@6.1.0</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html" >Writing<i class="fas fa-external-link-alt"></i></a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/docs/server.html" >Server<i class="fas fa-external-link-alt"></i></a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html" >Generating<i class="fas fa-external-link-alt"></i></a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a class="link"   target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html" >Deployment<i class="fas fa-external-link-alt"></i></a></p>
+<ol>
+<li>对方事后要求在Windows 7系统上运行，无奈只能选择NodeJS v13.x进行开发。（NodeJS从v14开始不再支持Windows 7）</li>
+<li>cheerio：HTML解析，可以加载远程页面，也可以加载HTML字符串。由于有几个页面需要先爬取URL再截图，故需要此包。</li>
+<li>open：一个封装后的包，功能主要是跨平台打开浏览器及URL，或者是打开文件，我的程序用来打开浏览器。</li>
+<li>screenshot-desktop：截图工具包，只需要一个 <code>screenshot(filename)</code> 就可以把截图保存下来，非常方便。</li>
+<li>sync-request：此包实际上已停止维护，且作者也建议使用 <code>then-request</code> ，但由于需要等待网页加载完成再进行截图，最方便的方式就是使用同步请求，等请求返回，拿到一组URL后，再逐一打开网页并截图。</li>
+</ol>
+<h3 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h3><ol>
+<li>一些常量定义及初始化工作，如保存截图的文件夹的创建。</li>
+<li>打开URL1，等待一个延时后截图并保存。</li>
+<li>打开URL2，等待一个延时后截图并保存。</li>
+<li>爬取URL2中的页面数据，提取出后续需要截图的URL列表。</li>
+<li>逐一访问URL列表中的地址，重复步骤2或3。</li>
+<li>全部截图完毕后，打开一个finish.html页面，提醒用户工作已全部完毕。</li>
+</ol>
+<h3 id="一些意外"><a href="#一些意外" class="headerlink" title="一些意外"></a>一些意外</h3><p>由于这类网站的一贯作风，网页写得十分地凑合。前面提到的URL2是一个列表，里面有至多12行数据，再多就通过底部的分页栏进行分页。但在访问这个页面的时候，其实服务器就把全部数据都从数据库中取出来，以Javascript字符串的形式输出到HTML页面上，甚至已经是html代码了，见下图：<br><img src="/2022/06/08/take-screenshot-via-nodejs/code-fragment.png"><br>而我后续要访问的页面就在这里面，即<code>&lt;a href=&quot;xxx&quot;&gt;&lt;/a&gt;</code>，没办法，只能把这段字符串形式的HTML代码抓取下来，放进cheerio里面把URL提取出来再进行后面的操作。</p>
+<h3 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h3><p>参见：<a class="link"   target="_blank" rel="noopener" href="https://github.com/TscCai/WeatherScreenshot" >WeatherScreenshot-TscCai<i class="fas fa-external-link-alt"></i></a></p>
 
         </div>
 
@@ -179,11 +210,11 @@
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li>本文标题：Hello World</li>
+        <li>本文标题：使用NodeJS进行截图</li>
         <li>本文作者：Tsccai</li>
-        <li>创建时间：2022-06-06 22:44:20</li>
+        <li>创建时间：2022-06-08 20:13:55</li>
         <li>
-            本文链接：https://tsccai.github.io/2022/06/06/hello-world/
+            本文链接：https://tsccai.github.io/2022/06/08/take-screenshot-via-nodejs/
         </li>
         <li>
             版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -195,25 +226,41 @@
         
 
         
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NodeJS/">#NodeJS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%88%AA%E5%9B%BE/">#截图</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E7%88%AC%E8%99%AB/">#爬虫</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
 
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                           rel="prev"
-                           href="/2022/06/08/take-screenshot-via-nodejs/"
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/06/06/hello-world/"
                         >
-                            <span class="left arrow-icon flex-center">
-                              <i class="fas fa-chevron-left"></i>
-                            </span>
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">使用NodeJS进行截图</span>
-                                <span class="post-nav-item">上一篇</span>
+                                <span class="post-nav-title-item">Hello World</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
                             </span>
                         </a>
                     </div>
-                
                 
             </div>
         
@@ -317,7 +364,7 @@
         <aside class="page-aside">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E9%A1%B9%E5%8F%8A%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">依赖项及说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%84%8F%E5%A4%96"><span class="nav-number">4.</span> <span class="nav-text">一些意外</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E9%83%A8%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">全部代码</span></a></li></ol>
     </div>
 </div>
         </aside>
