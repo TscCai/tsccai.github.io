@@ -53,4 +53,33 @@
         <tag>爬虫</tag>
       </tags>
   </entry>
+  <entry>
+    <title>VirtualBox中Windows7虚拟机运行缓慢的解决办法</title>
+    <url>/2022/06/11/solution-to-slow-win7-on-virtual-box/</url>
+    <content><![CDATA[<p>两三年之前装过一个32位的Windows XP，那时虚拟机用的还是VirtualBox 5.1.x，运行上无任何问题，十分流畅，虚拟机的屏幕分辨率也可以达到2K。最近需要安装一个Windows 7的虚拟机，心想跟以前安装的也不会有什么区别，怎料想这个64位的Windows 7虚拟机着实折腾了我两三天。其中查阅了好些博客，最终还是在VirtualBox的官方论坛上找到了原因和解决办法。<span id="more"></span></p>
+<h3 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h3><p>首先需要明确的是，在写下本文的2022年这个时间点，一台分配了2G内存，2核CPU以及128M显存的虚拟机用来运行Windows 7可以说是如丝般顺滑。如果你发现虚拟机安装系统时很卡、鼠标跳动、不跟手，系统安装完毕后进入系统也十分卡顿甚至直接卡死在进入系统前的Windows徽标界面，那么本文将有所帮助。而其他诸如更改声音控制芯片<a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">[1]</a>、显卡控制器选择<code>VBoxSVGA</code>而不是<code>VBoxVGA</code><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">[2]</a>以及安装VirtualBox GuestAddtion增强工具<a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">[3]</a>这些尝试都请在完成了官方论坛上的指南且无效的前提下再进行。</p>
+<h3 id="原因及解决办法"><a href="#原因及解决办法" class="headerlink" title="原因及解决办法"></a>原因及解决办法</h3><p>这个问题的产生根源是通常我们的宿主机系统(Windows平台)开启了Hyper-V，其优先级更高，使得VirtualBox，VMware等虚拟机竞争不到资源去运行虚拟机，所以出现异常卡顿的情况。而在中文互联网上搜索“VirtualBox卡顿”这样的关键词时搜索出来的却是上面那一堆无用的解决办法。而科学上网后用英文搜一下，很容易就得到了这样的结果：<br><img src="/2022/06/11/solution-to-slow-win7-on-virtual-box/post1.png" alt="post1"><br><img src="/2022/06/11/solution-to-slow-win7-on-virtual-box/post2.png" alt="post2"><br>注意到图1的Won’t even boot，跟我遇到的情况一样。而图2就给出了原因和解决办法。<br>简单来说，如果你发现虚拟机启动之后虚拟机窗口右下角有一个乌龟一样的图标：<img src="https://www.virtualbox.org/export/80012/vbox/trunk/src/VBox/Frontends/VirtualBox/images/vm_execution_engine_native_api_16px.png" style="display:inline"/>，就意味着虚拟机现在运行得十分缓慢，而这通常是因为Hyper-V没有完全禁用造成的。除了在控制面板的“启用或关闭Windows功能”里将Hyper-V相关的选项全部取消勾选以外，根据官方论坛里的帖子，还需要进行以下操作：</p>
+<ol>
+<li>关闭所有程序，关闭宿主机，彻底断电后重启（个人感觉这一步过于激进，其实只关闭VirtualBox也成功了）。</li>
+<li>确认下列进程或程序没有运行：<ol>
+<li>DeviceGuard</li>
+<li>CredentialGuard</li>
+<li>Windows Defender’s Core Isolation</li>
+</ol>
+</li>
+<li>以管理员权限执行以下命令：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bcdedit /set hypervisorlaunchtype off</span><br><span class="line">DISM /Online /Disable-Feature:Microsoft-Hyper-V</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>关机并重启（原文要求断电10s以上）</li>
+<li>再次运行虚拟机，如果原先绿色乌龟图标的位置上变成了<img src="https://www.virtualbox.org/export/76284/vbox/trunk/src/VBox/Frontends/VirtualBox/images/vtx_amdv_16px.png" style="display:inline"/> 这样的V字型图标即表明虚拟机现在运行正常。</li>
+</ol>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1]<a class="link"   href="https://www.cnblogs.com/z-books/p/15424350.html" >VirtualBox 6.1 运行win7卡死 卡顿<i class="fas fa-external-link-alt"></i></a></p>
+<p>[2]<a class="link"   href="http://www.4k8k.xyz/article/wx_lanyu/105436154" >解决VirtualBox虚拟机安装windwos 操作卡顿的问题_lanyu96-程序员资料_virtualbox运行win10很卡<i class="fas fa-external-link-alt"></i></a></p>
+<p>[3]<a class="link"   href="https://forums.virtualbox.org/viewtopic.php?t=100738" >Windows 7 VM Is EXTREMELY slow: (Wont even boot!)<i class="fas fa-external-link-alt"></i></a></p>
+<p>[4]<a class="link"   href="https://forums.virtualbox.org/viewtopic.php?f=25&t=99390" >Attempting fall back to NEM (Hyper-V is active)<i class="fas fa-external-link-alt"></i></a></p>
+]]></content>
+      <tags>
+        <tag>VirtualBox</tag>
+        <tag>VM</tag>
+        <tag>Hyper-V</tag>
+      </tags>
+  </entry>
 </search>
