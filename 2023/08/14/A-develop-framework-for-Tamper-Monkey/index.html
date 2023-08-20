@@ -9,7 +9,7 @@
     
     <title>
         
-            油猴脚本开发框架 |
+            油猴脚本开发环境搭建 |
         
         Tsccai&#39;s Blog
     </title>
@@ -124,7 +124,7 @@
     <div class="article-content-container">
 
         <div class="article-title">
-            <span class="title-hover-animation">油猴脚本开发框架</span>
+            <span class="title-hover-animation">油猴脚本开发环境搭建</span>
         </div>
 
         
@@ -162,6 +162,10 @@
                         | <a href="/tags/UglifyJS/">UglifyJS</a>&nbsp;
                     </li>
                 
+                    <li>
+                        | <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/">自动构建</a>&nbsp;
+                    </li>
+                
             </ul>
         </span>
     
@@ -189,16 +193,16 @@
 <p>这样即可在NodeJs中调用：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UnitTest.js</span></span><br><span class="line"><span class="keyword">const</span> assert = <span class="built_in">require</span>(<span class="string">&quot;assert&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Class1</span> = <span class="built_in">require</span>(<span class="string">&quot;class1&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> a = <span class="keyword">new</span> <span class="title class_">Class1</span>();</span><br><span class="line"><span class="title function_">assert</span>(a.<span class="title function_">memberMethod</span>() == <span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
 <p>相应的，uglifyjs命令行应这样写：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call uglifyjs defines.js, class1.js class2.js program.js -d DEBUG=1 -e -o tmp_link.js</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call uglifyjs defines.js, class1.js class2.js program.js -d DEBUG=0 -e -o tmp_link.js</span><br></pre></td></tr></table></figure>
 <h3 id="3-其他一些附带工作"><a href="#3-其他一些附带工作" class="headerlink" title="3. 其他一些附带工作"></a>3. 其他一些附带工作</h3><p>每次生成新的脚本后，还需要手动在浏览器中重新安装，这里也可以用脚本一键部署，只需要点一下“重新安装”按钮即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@REM deploy.bat</span><br><span class="line">SET BROWSER_PATH=<span class="string">&quot;D:\Program Files (x86)\Chrome 81 Portable\GoogleChromePortable.exe&quot;</span></span><br><span class="line">SET SCRIPT_PATH=<span class="string">&quot;file:///D:\project\dist\MyUserScript.user.js&quot;</span></span><br><span class="line">%BROWSER_PATH% %SCRIPT_PATH%</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@REM deploy.bat</span><br><span class="line">SET BROWSER_PATH=<span class="string">&quot;D:\Program Files (x86)\Chrome 81 Portable\GoogleChromePortable.exe&quot;</span></span><br><span class="line">SET SCRIPT_PATH=<span class="string">&quot;file:///D:\project\dist\MyUserScript.min.user.js&quot;</span></span><br><span class="line">%BROWSER_PATH% %SCRIPT_PATH%</span><br><span class="line"></span><br><span class="line">@REM 复制lib、打包、压缩代码此处略去</span><br></pre></td></tr></table></figure>
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li>本文标题：油猴脚本开发框架</li>
+        <li>本文标题：油猴脚本开发环境搭建</li>
         <li>本文作者：Tsccai</li>
         <li>创建时间：2023-08-14 20:26:43</li>
         <li>
@@ -226,6 +230,10 @@
                 
                     <li class="tag-item">
                         <a href="/tags/UglifyJS/">#UglifyJS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/">#自动构建</a>&nbsp;
                     </li>
                 
             </ul>

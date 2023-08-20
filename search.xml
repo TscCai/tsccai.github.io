@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>油猴脚本开发框架</title>
+    <title>油猴脚本开发环境搭建</title>
     <url>/2023/08/14/A-develop-framework-for-Tamper-Monkey/</url>
     <content><![CDATA[<p>在油猴脚本的浏览器扩展中直接编写脚本并不是最佳的开发模式，除了将开发中的脚本在扩展中用@require关键字进行引用后，用VS Code等编辑器进行开发。本文更进一步，在UglifyJS的支持下提升开发体验。<span id="more"></span></p>
 <h3 id="1-源文件的链接"><a href="#1-源文件的链接" class="headerlink" title="1. 源文件的链接"></a>1. 源文件的链接</h3><p>假设我们有这样一个工程目录：</p>
@@ -14,13 +14,14 @@
 <p>这样即可在NodeJs中调用：</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// UnitTest.js</span></span><br><span class="line"><span class="keyword">const</span> assert = <span class="built_in">require</span>(<span class="string">&quot;assert&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Class1</span> = <span class="built_in">require</span>(<span class="string">&quot;class1&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> a = <span class="keyword">new</span> <span class="title class_">Class1</span>();</span><br><span class="line"><span class="title function_">assert</span>(a.<span class="title function_">memberMethod</span>() == <span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
 <p>相应的，uglifyjs命令行应这样写：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">call uglifyjs defines.js, class1.js class2.js program.js -d DEBUG=1 -e -o tmp_link.js</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">call uglifyjs defines.js, class1.js class2.js program.js -d DEBUG=0 -e -o tmp_link.js</span><br></pre></td></tr></table></figure>
 <h3 id="3-其他一些附带工作"><a href="#3-其他一些附带工作" class="headerlink" title="3. 其他一些附带工作"></a>3. 其他一些附带工作</h3><p>每次生成新的脚本后，还需要手动在浏览器中重新安装，这里也可以用脚本一键部署，只需要点一下“重新安装”按钮即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">@REM deploy.bat</span><br><span class="line">SET BROWSER_PATH=<span class="string">&quot;D:\Program Files (x86)\Chrome 81 Portable\GoogleChromePortable.exe&quot;</span></span><br><span class="line">SET SCRIPT_PATH=<span class="string">&quot;file:///D:\project\dist\MyUserScript.user.js&quot;</span></span><br><span class="line">%BROWSER_PATH% %SCRIPT_PATH%</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">@REM deploy.bat</span><br><span class="line">SET BROWSER_PATH=<span class="string">&quot;D:\Program Files (x86)\Chrome 81 Portable\GoogleChromePortable.exe&quot;</span></span><br><span class="line">SET SCRIPT_PATH=<span class="string">&quot;file:///D:\project\dist\MyUserScript.min.user.js&quot;</span></span><br><span class="line">%BROWSER_PATH% %SCRIPT_PATH%</span><br><span class="line"></span><br><span class="line">@REM 复制lib、打包、压缩代码此处略去</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>油猴脚本</tag>
         <tag>VS Code</tag>
         <tag>UglifyJS</tag>
+        <tag>自动构建</tag>
       </tags>
   </entry>
   <entry>
