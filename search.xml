@@ -283,12 +283,8 @@
 <td align="left">生产环境中部署服务，WoL捕获后仅以命令行启动记事本</td>
 <td align="left">一切正常，多次发送WoL报文可反复启动记事本</td>
 </tr>
-<tr>
-<td align="left">随后我又将生产环境中的Virtualbox升级到7.08，结果依然没有改变。于是，可以初步得出结论，SharpPcap 4.3.0（最后一个支持.NET Framework的版本，目前最新版为6.0）在Windows 2012R2上存在Bug会在Virtualbox启动后异常中止抓包，而且该异常还无法被捕捉到，<code>ErrorWhileCapturing</code>的日志是<code>OnCaptureStopped</code>事件中报出来的。</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
 </tbody></table>
+<p> 随后我又将生产环境中的Virtualbox升级到7.08，结果依然没有改变。于是，可以初步得出结论，SharpPcap 4.3.0（最后一个支持.NET Framework的版本，目前最新版为6.0）在Windows 2012R2上存在Bug会在Virtualbox启动后异常中止抓包，而且该异常还无法被捕捉到，<code>ErrorWhileCapturing</code>的日志是<code>OnCaptureStopped</code>事件中报出来的。</p>
 <h4 id="折中的解决办法"><a href="#折中的解决办法" class="headerlink" title="折中的解决办法"></a>折中的解决办法</h4><p> 既然SharpPcap没法使用更高的版本，Virtualbox使用了更高的版本也无济于事，只能通过折中的办法来解决了——线程守护&#x2F;看门狗。即在<code>OnCaptureStopped</code>中重启抓包的线程。需要注意的是，不能无脑重启，需要设置一个线程启动失败的计数器，启动失败超过一定次数（我设定的是5次）就不再重启了，打日志出来，然后开摆。否则你的服务可能陷入“线程异常中止——线程重启”的死循环。而一旦线程启动成功，就将应将计数器归零。这是一个十分朴素的看门狗。</p>
 ]]></content>
       <tags>
