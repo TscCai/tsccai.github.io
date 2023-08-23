@@ -126,6 +126,67 @@
                 
 
                 <h3 class="home-article-title">
+                    <a href="/2023/08/23/windows-service-development-for-vm-wol/">
+                        面向虚拟机Wake-on-LAN的Windows服务开发
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        <h3 id="为什么是虚拟机WoL？"><a href="#为什么是虚拟机WoL？" class="headerlink" title="为什么是虚拟机WoL？"></a>为什么是虚拟机WoL？</h3><p>我有一台HP MicroServer Gen8服务器，操作系统是Windows Server 2012R2。上面跑了一个VirtualBox的CentOS虚拟机。有的时候我需要通过WoL启动宿主服务器，再启动虚拟机。但我并不是每次启动服务器后都立即启动虚拟机，所以最佳的方式是启动一个服务来监听WoL报文，一旦有匹配上虚拟机MAC的WoL报文达到，就启动虚拟机（通常是采用命令行在后台启动虚拟机，没有窗口界面）。但这个需求似乎很小众，GitHub上这类项目不多，且都是8~10年以上的老项目，还都没有实际代码。另外有一个<a class="link"   target="_blank" rel="noopener" href="http://www.yarovy.com/wolvm/index.html" >Wake-On-LAN Virtual Machine<i class="fas fa-external-link-alt"></i></a>，功能完美匹配我的需求，但我从来没有成功启动过，而且这还是个收费软件。</p>
+<p>没办法，只能自己造轮子了。但普通的Windows服务开发我打算略过，我也不过是看了几篇博客和微软的官方文档。这里重点记录一下开发过程中的遇到的一些坑。</p>
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Wed Aug 23 2023 22:48:54 GMT+0800">2023-08-23</span></span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/VirtualBox/">VirtualBox</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Virtual-Machine/">Virtual Machine</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Windows%E6%9C%8D%E5%8A%A1/">Windows服务</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/SharpPcap/">SharpPcap</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/WoL/">WoL</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/08/23/windows-service-development-for-vm-wol/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                <h3 class="home-article-title">
                     <a href="/2023/08/14/hexo-trouble-shooting/">
                         Hexo博客部署出错
                     </a>
