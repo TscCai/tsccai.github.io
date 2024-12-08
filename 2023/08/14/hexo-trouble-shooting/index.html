@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Tsccai">
+    
+    <title>
+        
+            Hexo博客部署出错 |
+        
+        Tsccai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"tsccai.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.png","favicon":"/images/logo.svg","article_img_align":"center","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":false},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Tsccai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">Hexo博客部署出错</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.png">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Tsccai</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-08-14 22:12:03</span>
+        <span class="mobile">2023-08-14 22:12</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Hexo/">Hexo</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%BC%82%E5%B8%B8/">异常</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/GitHub/">GitHub</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>很久没有写博客了，突然发现部署到github都出问题了。这个配置我没有动过，不知道什么原因。在网上搜索了很多资料，现在问题解决了，记录下来。<span id="more"></span></p>
+<h3 id="1-Error-Spawn-failed"><a href="#1-Error-Spawn-failed" class="headerlink" title="1. Error: Spawn failed"></a>1. Error: Spawn failed</h3><p>这个错误的症状是在执行部署命令<code>hexo d</code>后，控制台大量刷文件换行符的告警，大量的文件将有LF换行符替换为CRLF换行符。<br><img src="/2023/08/14/hexo-trouble-shooting/spawn-failed-error.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (E:\Documents\Git Projects\Remote\hexo-blog\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (node:events:390:28)</span><br><span class="line">      at ChildProcess.cp.emit (E:\Documents\Git Projects\Remote\hexo-blog\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (node:internal/child_process:290:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span></span><br></pre></td></tr></table></figure>
+<p>解决方式如下：将hexo博客目录下的.deploy_git目录删除，再执行git命令，关闭自动替换换行符功能即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##进入站点根目录</span></span><br><span class="line"><span class="built_in">cd</span> /usr/local/src/hexo-blog/</span><br><span class="line"></span><br><span class="line"><span class="comment">##删除git提交内容文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##执行</span></span><br><span class="line">git config --global core.autocrlf <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-fatal-unable-to-auto-detect-email-address"><a href="#2-fatal-unable-to-auto-detect-email-address" class="headerlink" title="2. fatal: unable to auto-detect email address"></a>2. fatal: unable to auto-detect email address</h3><p>报错如图：<br><img src="/2023/08/14/hexo-trouble-shooting/username-missing.png"><br>解决方法为进入hexo博客所在目录，在子目录<code>.deploy_git/.git</code>目录中编辑<code>config</code>文件，添加如下配置节</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">    email=<span class="string">&quot;Your Github sign in email&quot;</span></span><br><span class="line">    name=<span class="string">&quot;Your Github username&quot;</span></span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：Hexo博客部署出错</li>
+        <li>本文作者：Tsccai</li>
+        <li>创建时间：2023-08-14 22:12:03</li>
+        <li>
+            本文链接：https://tsccai.github.io/2023/08/14/hexo-trouble-shooting/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/Hexo/">#Hexo</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E5%BC%82%E5%B8%B8/">#异常</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/GitHub/">#GitHub</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2023/08/23/windows-service-development-for-vm-wol/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">面向虚拟机Wake-on-LAN的Windows服务开发</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/08/14/development-environment-for-userscript/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">油猴脚本开发环境搭建</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Tsccai</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Error-Spawn-failed"><span class="nav-number">1.</span> <span class="nav-text">1. Error: Spawn failed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-fatal-unable-to-auto-detect-email-address"><span class="nav-number">2.</span> <span class="nav-text">2. fatal: unable to auto-detect email address</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+<div class="post-scripts">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+
+</body>
+</html>

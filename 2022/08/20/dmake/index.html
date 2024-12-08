@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Tsccai">
+    
+    <title>
+        
+            dmake，一个文档编译工具 |
+        
+        Tsccai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"tsccai.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.png","favicon":"/images/logo.svg","article_img_align":"center","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":false},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Tsccai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">dmake，一个文档编译工具</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.png">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Tsccai</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-08-20 21:33:15</span>
+        <span class="mobile">2022-08-20 21:33</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/document/">document</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/makefile/">makefile</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/auto-generate/">auto-generate</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>工作中被反复修改的文档搞破防了。这些文档有一个特点，就是同一段文字会多次出现在一个或者多个.docx文件中。于是在破防之余，开发了这个dmake工具，用于从Markdown文件编译生成需要的.docx文件。<span id="more"></span></p>
+<h3 id="1-什么是dmake"><a href="#1-什么是dmake" class="headerlink" title="1. 什么是dmake"></a>1. 什么是dmake</h3><p>dmake( document-make) 是一个用于编译包含有较多重复文档部件且分布在多个文档或一个文档的多处的命令行工具。其设计初衷为避免人工编写时出现的错误和遗漏。该软件受到了hexo博客系统、makefile等项目的启发，你可以在使用中发现上述项目的影子。</p>
+<h3 id="2-安装dmake"><a href="#2-安装dmake" class="headerlink" title="2. 安装dmake"></a>2. 安装dmake</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dmake install</span><br><span class="line">dmake unsinstall</span><br></pre></td></tr></table></figure>
+<p>注：该命令作用仅为添加环境变量，dmake文件需要手动删除。</p>
+<h3 id="2-快速入门"><a href="#2-快速入门" class="headerlink" title="2. 快速入门"></a>2. 快速入门</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> TestProject    REM 在当前位置新建TestProject目录</span><br><span class="line"><span class="built_in">cd</span> TestProject       REM 进入TestProject目录</span><br><span class="line">dmake init c4t2      REM 初始化一个c4t2项目（IV级风险二票）</span><br><span class="line">dmake                REM 编译项目，生成文档</span><br></pre></td></tr></table></figure>
+<p>注：项目目录中存在一个d-makefile，文件名为<code>makefile.yaml</code>（或<code>makefile.yml</code>）。</p>
+<h3 id="3-makefile-yaml文件概述"><a href="#3-makefile-yaml文件概述" class="headerlink" title="3. makefile.yaml文件概述"></a>3. makefile.yaml文件概述</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># makefile.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义需编译生成的目标文档</span></span><br><span class="line"><span class="attr">filename:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">test.docx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">foo.docx</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义生成上述文档所用到的模板文档，与生成文档为一一对应关系</span></span><br><span class="line"><span class="attr">template:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">template1.docx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">template2.docx</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文档源文件，重复、可变的文档部件均定义在下列.md文件中</span></span><br><span class="line"><span class="attr">source:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">abstract.md</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">safety_measure.md</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-dmake项目支持的Markdown语法"><a href="#4-dmake项目支持的Markdown语法" class="headerlink" title="4. dmake项目支持的Markdown语法"></a>4. dmake项目支持的Markdown语法</h3><table>
+<thead>
+<tr>
+<th>语法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>三级标题</td>
+<td>用于字段定义, 值应紧随在下面的行中</td>
+</tr>
+<tr>
+<td>列表</td>
+<td>支持有序列表（含多级列表）</td>
+</tr>
+<tr>
+<td>图片</td>
+<td>支持jpg, png, gif, bmp, vsd, vsdx图片的插入</td>
+</tr>
+<tr>
+<td>引用</td>
+<td>从其他字段定义的值中引用到本字段，或从外部导入Word文档</td>
+</tr>
+<tr>
+<td>表格</td>
+<td>支持单列单元格文本插入</td>
+</tr>
+<tr>
+<td>注释</td>
+<td>同HTML注释，&lt;!– 注释内容 –&gt; ，可跨行，不支持嵌套注释</td>
+</tr>
+</tbody></table>
+<h3 id="5-md源文件示例"><a href="#5-md源文件示例" class="headerlink" title="5. md源文件示例"></a>5. md源文件示例</h3><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">### IMG<span class="emphasis">_TEST</span></span></span><br><span class="line"><span class="emphasis"><span class="section">![<span class="string">image-title</span>](<span class="link">../img/test.jpg</span>) </span></span></span><br><span class="line"><span class="emphasis"><span class="section">![<span class="string">image-title</span>](<span class="link">../img/test2.vsd#2</span>)   &lt;!--将img/test2.vsd文件的第2页转换为jpeg并插入到文档中（vsd文件首页编号为1） --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">![<span class="string">image-title</span>](<span class="link">../img/test3.vsd</span>)     &lt;!-- 将img/test3.vsd文件的第1页转换为jpeg并插入到文档中--&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!-- 注意，图片的插入必须使用IMG_</span>前缀 --&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### CL<span class="emphasis">_LIST</span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!-- 单列单元格列表，以下列表将被插入到MergedField所在列，并自动插入新的行 --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">- Item 1</span></span></span><br><span class="line"><span class="emphasis"><span class="section">- <span class="strong">**Item 2**</span></span></span></span><br><span class="line"><span class="emphasis"><span class="section">- Item 3</span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!-- 列表项目以 - 为前缀，并支持加粗格式符 --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!--三级标题中的[ ]内为备注描述文本，可选项 --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">### SURVEY_</span>DATE[查勘日期]</span></span><br><span class="line">2022-04-01 12:00</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### LOCATION[地点]</span></span><br><span class="line">Somewhere</span><br><span class="line"></span><br><span class="line"><span class="section">### TEST<span class="emphasis">_FIELD</span></span></span><br><span class="line"><span class="emphasis"><span class="section">[](<span class="link">#LOCATION</span>)是一个测试引用，它引用自###LOCATION块</span></span></span><br><span class="line"><span class="emphasis"><span class="section">[](<span class="link">#LIST[2]</span>)引用了一个列表中的第2子项（从1开始）</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">### FILE_</span>IMPORT</span></span><br><span class="line">[<span class="string">$IMPORT</span>](<span class="link">../assets/src.docx</span>)     &lt;!-- 注意，当从外部导入文档时，必须使用$IMPORT关键字 --&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-约定优于配置"><a href="#6-约定优于配置" class="headerlink" title="6. 约定优于配置"></a>6. 约定优于配置</h3><p>我们约定dmake项目有如下目录结构，请勿修改目录名或文件名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">工作目录</span><br><span class="line">  ├─img</span><br><span class="line">  ├─md</span><br><span class="line">  ├─template</span><br><span class="line">  └─makefile.yaml</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>img</td>
+<td>图片存放目录</td>
+</tr>
+<tr>
+<td>md</td>
+<td>Markdown源文件存放目录</td>
+</tr>
+<tr>
+<td>template</td>
+<td>模板文件存放目录</td>
+</tr>
+<tr>
+<td>makefile.yaml</td>
+<td>自动化生成文件</td>
+</tr>
+</tbody></table>
+<p>此外，在md文件中引用图片、文件时，以md目录为起点</p>
+<h3 id="7-dmake-命令行用法"><a href="#7-dmake-命令行用法" class="headerlink" title="7. dmake 命令行用法"></a>7. dmake 命令行用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化dmake工作目录</span></span><br><span class="line">dmake init c3t1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译并生成文档</span></span><br><span class="line">dmake</span><br><span class="line">dmake make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向项目工作目录中添加已安装的模板</span></span><br><span class="line">dmake add template test_template</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出本机已安装的模板</span></span><br><span class="line">dmake list template </span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装dmake（将dmake目录添加到PATH环境变量，需在dmake目录下执行）</span></span><br><span class="line">dmake install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 卸载dmake（仅将dmake目录从PATH环境变量中移除）</span></span><br><span class="line">dmake uninstall</span><br></pre></td></tr></table></figure>
+<p>注：当dmake遇到错误命令时会显示帮助信息，可供查看</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：dmake，一个文档编译工具</li>
+        <li>本文作者：Tsccai</li>
+        <li>创建时间：2022-08-20 21:33:15</li>
+        <li>
+            本文链接：https://tsccai.github.io/2022/08/20/dmake/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/document/">#document</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/makefile/">#makefile</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/auto-generate/">#auto-generate</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/10/18/execute-after-ajax-complete/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">如何在Ajax请求执行完毕后再运行代码</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/06/11/solution-to-slow-win7-on-virtual-box/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">VirtualBox中Windows7虚拟机运行缓慢的解决办法</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Tsccai</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFdmake"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是dmake</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85dmake"><span class="nav-number">2.</span> <span class="nav-text">2. 安装dmake</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-number">3.</span> <span class="nav-text">2. 快速入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-makefile-yaml%E6%96%87%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">4.</span> <span class="nav-text">3. makefile.yaml文件概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-dmake%E9%A1%B9%E7%9B%AE%E6%94%AF%E6%8C%81%E7%9A%84Markdown%E8%AF%AD%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">4. dmake项目支持的Markdown语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-md%E6%BA%90%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.</span> <span class="nav-text">5. md源文件示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%BA%A6%E5%AE%9A%E4%BC%98%E4%BA%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">6. 约定优于配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-dmake-%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%94%A8%E6%B3%95"><span class="nav-number">8.</span> <span class="nav-text">7. dmake 命令行用法</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+<div class="post-scripts">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+
+</body>
+</html>

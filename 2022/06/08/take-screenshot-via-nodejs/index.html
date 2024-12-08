@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Tsccai">
+    
+    <title>
+        
+            使用NodeJS进行截图 |
+        
+        Tsccai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"tsccai.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.png","favicon":"/images/logo.svg","article_img_align":"center","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":false},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Tsccai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">使用NodeJS进行截图</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.png">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Tsccai</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-06-08 20:13:55</span>
+        <span class="mobile">2022-06-08 20:13</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NodeJS/">NodeJS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%88%AA%E5%9B%BE/">截图</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>工作中，产生了这样一个需求：想要访问一个网站，并在3个及以上的URL下全屏截图保存到本地。初步了解了一下这方面的现成方案：</p>
+<ol>
+<li>使用Chrome –headless</li>
+<li>使用puttepeer，这是方案1的进阶版</li>
+</ol>
+<p>但是很可惜，经过进一步的与对方沟通，他们要求不仅是把网页截图下来，还需要把浏览器，包括地址栏都要截取下来，防止上级部门怪罪下来说他们伪造截图。这样上面的两种方法就都行不通了——它们都只能截取网页本身，也就是<code>&lt;html&gt;  …… &lt;/html&gt;</code>标签之间，渲染后的图片。<br>想着本来都已经把puttepeer安装上了，也懒得转Python了，索性就NodeJS三两下搞定吧。<span id="more"></span> </p>
+<h3 id="依赖项及说明"><a href="#依赖项及说明" class="headerlink" title="依赖项及说明"></a>依赖项及说明</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">├── cheerio@1.0.0-rc.11</span><br><span class="line">├── open@8.4.0</span><br><span class="line">├── screenshot-desktop@1.12.7</span><br><span class="line">└── sync-request@6.1.0</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>对方事后要求在Windows 7系统上运行，无奈只能选择NodeJS v13.x进行开发。（NodeJS从v14开始不再支持Windows 7）</li>
+<li>cheerio：HTML解析，可以加载远程页面，也可以加载HTML字符串。由于有几个页面需要先爬取URL再截图，故需要此包。</li>
+<li>open：一个封装后的包，功能主要是跨平台打开浏览器及URL，或者是打开文件，我的程序用来打开浏览器。</li>
+<li>screenshot-desktop：截图工具包，只需要一个 <code>screenshot(filename)</code> 就可以把截图保存下来，非常方便。</li>
+<li>sync-request：此包实际上已停止维护，且作者也建议使用 <code>then-request</code> ，但由于需要等待网页加载完成再进行截图，最方便的方式就是使用同步请求，等请求返回，拿到一组URL后，再逐一打开网页并截图。</li>
+</ol>
+<h3 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h3><ol>
+<li>一些常量定义及初始化工作，如保存截图的文件夹的创建。</li>
+<li>打开URL1，等待一个延时后截图并保存。</li>
+<li>打开URL2，等待一个延时后截图并保存。</li>
+<li>爬取URL2中的页面数据，提取出后续需要截图的URL列表。</li>
+<li>逐一访问URL列表中的地址，重复步骤2或3。</li>
+<li>全部截图完毕后，打开一个finish.html页面，提醒用户工作已全部完毕。</li>
+</ol>
+<h3 id="一些意外"><a href="#一些意外" class="headerlink" title="一些意外"></a>一些意外</h3><p>由于这类网站的一贯作风，网页写得十分地凑合。前面提到的URL2是一个列表，里面有至多12行数据，再多就通过底部的分页栏进行分页。但在访问这个页面的时候，其实服务器就把全部数据都从数据库中取出来，以Javascript字符串的形式输出到HTML页面上，甚至已经是html代码了，见下图：<br><img src="/2022/06/08/take-screenshot-via-nodejs/code-fragment.png"><br>而我后续要访问的页面就在这里面，即<code>&lt;a href=&quot;xxx&quot;&gt;&lt;/a&gt;</code>，没办法，只能把这段字符串形式的HTML代码抓取下来，放进cheerio里面把URL提取出来再进行后面的操作。</p>
+<h3 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h3><p>参见：<a class="link"   target="_blank" rel="noopener" href="https://github.com/TscCai/WeatherScreenshot" >WeatherScreenshot-TscCai<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：使用NodeJS进行截图</li>
+        <li>本文作者：Tsccai</li>
+        <li>创建时间：2022-06-08 20:13:55</li>
+        <li>
+            本文链接：https://tsccai.github.io/2022/06/08/take-screenshot-via-nodejs/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/NodeJS/">#NodeJS</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%88%AA%E5%9B%BE/">#截图</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E7%88%AC%E8%99%AB/">#爬虫</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/06/11/solution-to-slow-win7-on-virtual-box/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">VirtualBox中Windows7虚拟机运行缓慢的解决办法</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/06/06/hello-world/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Hello World</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Tsccai</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E9%A1%B9%E5%8F%8A%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">依赖项及说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%84%8F%E5%A4%96"><span class="nav-number">4.</span> <span class="nav-text">一些意外</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E9%83%A8%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">全部代码</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+<div class="post-scripts">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>在Wireshark中捕获带VLAN的报文</title>
+    <url>/2024/12/08/capture-packet-with-vlan-in-wireshark/</url>
+    <content><![CDATA[<p>中文互联网上一搜这个问题，全是CSDN的垃圾内容。基本都是针对Wireshark 2.x以前的了，已经过时了。还得是在Wireshark的官方论坛才找到答案。<span id="more"></span></p>
+<h3 id="Wireshark-4-x后VLAN抓包的变化"><a href="#Wireshark-4-x后VLAN抓包的变化" class="headerlink" title="Wireshark 4.x后VLAN抓包的变化"></a>Wireshark 4.x后VLAN抓包的变化</h3><p>Wireshark 4.x后，在首选项的<code>外观-列</code>中再也无法添加一个类型叫<code>802.1Q VLAN id</code>的列了（如下图）。<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/wireshark-prefernce-old.png" alt="wireshark-old-preference"><br>取而代之的，则是添加一个类型为<code>Custom</code>（自定义）的列，并在<code>Fields</code>(字段)处填写<code>vlan.id</code>（填写过程中会有自动补全提示）。<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/wireshark-prefernce.png" alt="wireshark-prefernce"></p>
+<h3 id="正确的网卡抓包设置"><a href="#正确的网卡抓包设置" class="headerlink" title="正确的网卡抓包设置"></a>正确的网卡抓包设置</h3><p>需要捕获VLAN的网口需要设置为混杂模式</p>
+<h3 id="设备管理器中的网卡设置"><a href="#设备管理器中的网卡设置" class="headerlink" title="设备管理器中的网卡设置"></a>设备管理器中的网卡设置</h3><p>网卡要开启VLAN和有优先级（不同网卡，这个配置项的名称不同）</p>
+<h3 id="修改注册表"><a href="#修改注册表" class="headerlink" title="修改注册表"></a>修改注册表</h3><p>前3项都完成了但还不能成功的，则需要修改注册表。通过设备管理器，在注册表里找到对应的网卡，然后做如下修改：<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ethernet-adapter-config.png"><br>查看 MonitorModeEnabled的值是否为1，PreserveVlanInfoInRxPacket的值是否为1.<br>若不存在，则新建 DWORD（32位），文件名分别为MonitorModeEnabled 、PreserveVlanInfoInRxPacket，设置值为1。设置完后重启电脑。</p>
+]]></content>
+      <tags>
+        <tag>Wireshark</tag>
+        <tag>VLAN</tag>
+        <tag>抓包</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>油猴脚本开发环境搭建</title>
+    <url>/2023/08/14/development-environment-for-userscript/</url>
+    <content><![CDATA[<p>在油猴脚本的浏览器扩展中直接编写脚本并不是最佳的开发模式，除了将开发中的脚本在扩展中用@require关键字进行引用后，用VS Code等编辑器进行开发。本文更进一步，在UglifyJS的支持下提升开发体验。<span id="more"></span></p>
+<h3 id="1-源文件的链接"><a href="#1-源文件的链接" class="headerlink" title="1. 源文件的链接"></a>1. 源文件的链接</h3><p>假设我们有这样一个工程目录：</p>
+<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">ProjectFolder</span><br><span class="line">│  defines.js</span><br><span class="line">│  gm_header.js</span><br><span class="line">│  program.js</span><br><span class="line">│  class1.js</span><br><span class="line">│  class2.js</span><br><span class="line">│</span><br><span class="line">├─lib</span><br><span class="line">│      lib1.js</span><br><span class="line">│      lib2.js</span><br><span class="line">└─test</span><br><span class="line">       unit-test.js</span><br></pre></td></tr></table></figure>
+<p>其中，<code>defines.js</code>是常量定义，<code>class1.js</code>，<code>class2.js</code>和<code>program.js</code>是我们自己编写的代码，<code>lib</code>目录内是我们引用的一些库，<code>gm_header.js</code>则是油猴脚本的文件头，即<code>// ==UserScript==</code>注释片段。那么我们可以在工程目录下编写一个<code>build.bat</code>来进行代码的连接和压缩，可类比编译器的连接和编译。构建脚本如下：</p>
+<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line"><span class="comment">@REM build.bat</span></span><br><span class="line"><span class="keyword">call</span> uglifyjs defines.js, class1.js class2.js program.js -e -o tmp_link.js</span><br><span class="line"><span class="keyword">call</span> uglifyjs header.js tmp_link.js --comments all -o MyUserScript.min.user.js</span><br><span class="line"><span class="built_in">del</span> tmp_link.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-脚本的单元测试"><a href="#2-脚本的单元测试" class="headerlink" title="2. 脚本的单元测试"></a>2. 脚本的单元测试</h3><p>编写好的脚本虽然是在浏览器中运行，但也可以在VSCode中通过NodeJs进行单元测试。NodeJs中调用其他脚本的方法需要将脚本导出至模块。但将导出模块的代码写死，在浏览器中又会报错。我们可以利用<code>uglifyjs</code>的全局变量定义参数来达到编译预处理的条件编译效果。这里我们约定使用<code>DEBUG</code>全局变量来区分运行环境。以上面的<code>class1.js</code>为例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// class1.js</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Class1</span>&#123;</span><br><span class="line">    <span class="keyword">static</span> staticProperty = <span class="string">&quot;foo&quot;</span>;</span><br><span class="line">    <span class="title function_">memberMethod</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">staticMethod</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;static Method&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable constant_">DEBUG</span>)&#123;</span><br><span class="line">    <span class="variable language_">module</span>.<span class="property">exports</span>  = <span class="title class_">Class1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样即可在NodeJs中调用：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// UnitTest.js</span></span><br><span class="line"><span class="keyword">const</span> assert = <span class="built_in">require</span>(<span class="string">&quot;assert&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Class1</span> = <span class="built_in">require</span>(<span class="string">&quot;class1&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> a = <span class="keyword">new</span> <span class="title class_">Class1</span>();</span><br><span class="line"><span class="title function_">assert</span>(a.<span class="title function_">memberMethod</span>() == <span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>相应的，uglifyjs命令行应这样写：</p>
+<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line"><span class="keyword">call</span> uglifyjs defines.js, class1.js class2.js program.js -d DEBUG=<span class="number">0</span> -e -o tmp_link.js</span><br></pre></td></tr></table></figure>
+<h3 id="3-其他一些附带工作"><a href="#3-其他一些附带工作" class="headerlink" title="3. 其他一些附带工作"></a>3. 其他一些附带工作</h3><p>每次生成新的脚本后，还需要手动在浏览器中重新安装，这里也可以用脚本一键部署，只需要点一下“重新安装”按钮即可：</p>
+<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line"><span class="comment">@REM deploy.bat</span></span><br><span class="line"><span class="built_in">SET</span> BROWSER_PATH=&quot;D:\Program Files (x86)\Chrome <span class="number">81</span> Portable\GoogleChromePortable.exe&quot;</span><br><span class="line"><span class="built_in">SET</span> SCRIPT_PATH=&quot;file:///D:\project\dist\MyUserScript.min.user.js&quot;</span><br><span class="line"><span class="variable">%BROWSER_PATH%</span> <span class="variable">%SCRIPT_PATH%</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">@REM 复制lib、打包、压缩代码此处略去</span></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>油猴脚本</tag>
+        <tag>VS Code</tag>
+        <tag>UglifyJS</tag>
+        <tag>自动构建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何在Ajax请求执行完毕后再运行代码</title>
+    <url>/2022/10/18/execute-after-ajax-complete/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我们都知道，Ajax是以异步方式从服务器取回数据并在页面上进行动态更新。但有时我们会遇到程序后续的操作依赖于前面Ajax的结果，这时一种简陋的方法是用同步方式发起请求。但这既违背了Ajax的初衷，同时在处理较多数据时也会造成浏览器假死，甚至被浏览器弹窗告警。我认为这种方式只能在获取数据量或发起的Ajax请求数量已知且较少的情况下使用。在ES6的时代，我们可以使用await&#x2F;async方法来完美解决。<span id="more"></span></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>首先，考虑这样一个爬虫场景：</p>
+<ol>
+<li>我们需要从数据接口A获取一些数据，再从数据接口B获取一些数据。</li>
+<li>由于数据量较大，每次从接口获取数据都是分页获取的。当第一次从上述接口取得数据后，即可从返回的数据中得知我们需要的数据被分为了多少页。</li>
+<li>当这些数据全部获取完毕后，把所有这些数据导出或者在页面进行展示。</li>
+<li>当然，额外地，我们还可以在整个抓取过程开始前给页面加一个遮罩并添加一个进度条，当抓取完毕再移除掉。</li>
+</ol>
+<p>以下是代码，注意省略了访问接口A的代码</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// program.js</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="title function_">crawlFromWeb</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">main</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">crawlFromWeb</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="comment">// JQuery</span></span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">&quot;http://api.btstu.cn/yan/api.php?charset=utf-8&amp;encode=json&quot;</span>;</span><br><span class="line">    <span class="keyword">const</span> details = <span class="keyword">await</span> $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">                    <span class="attr">url</span>: url,</span><br><span class="line">                    <span class="attr">type</span>: <span class="string">&quot;get&quot;</span>,</span><br><span class="line">                    <span class="attr">contentType</span>: <span class="string">&quot;application/json&quot;</span></span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// fetch</span></span><br><span class="line">    <span class="keyword">const</span> details2 = <span class="keyword">await</span> <span class="title function_">fetch</span>(url);</span><br><span class="line">    <span class="keyword">const</span> json = <span class="keyword">await</span> details2.<span class="title function_">json</span>();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(json);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> details;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>JQuery</tag>
+        <tag>Ajax</tag>
+        <tag>异步</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/06/06/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a class="link"   href="https://hexo.io/" >Hexo<i class="fas fa-external-link-alt"></i></a>! This is your very first post. Check <a class="link"   href="https://hexo.io/docs/" >documentation<i class="fas fa-external-link-alt"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link"   href="https://hexo.io/docs/troubleshooting.html" >troubleshooting<i class="fas fa-external-link-alt"></i></a> or you can ask me on <a class="link"   href="https://github.com/hexojs/hexo/issues" >GitHub<i class="fas fa-external-link-alt"></i></a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/writing.html" >Writing<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/server.html" >Server<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/generating.html" >Generating<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/one-command-deployment.html" >Deployment<i class="fas fa-external-link-alt"></i></a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>dmake，一个文档编译工具</title>
+    <url>/2022/08/20/dmake/</url>
+    <content><![CDATA[<p>工作中被反复修改的文档搞破防了。这些文档有一个特点，就是同一段文字会多次出现在一个或者多个.docx文件中。于是在破防之余，开发了这个dmake工具，用于从Markdown文件编译生成需要的.docx文件。<span id="more"></span></p>
+<h3 id="1-什么是dmake"><a href="#1-什么是dmake" class="headerlink" title="1. 什么是dmake"></a>1. 什么是dmake</h3><p>dmake( document-make) 是一个用于编译包含有较多重复文档部件且分布在多个文档或一个文档的多处的命令行工具。其设计初衷为避免人工编写时出现的错误和遗漏。该软件受到了hexo博客系统、makefile等项目的启发，你可以在使用中发现上述项目的影子。</p>
+<h3 id="2-安装dmake"><a href="#2-安装dmake" class="headerlink" title="2. 安装dmake"></a>2. 安装dmake</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dmake install</span><br><span class="line">dmake unsinstall</span><br></pre></td></tr></table></figure>
+<p>注：该命令作用仅为添加环境变量，dmake文件需要手动删除。</p>
+<h3 id="2-快速入门"><a href="#2-快速入门" class="headerlink" title="2. 快速入门"></a>2. 快速入门</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> TestProject    REM 在当前位置新建TestProject目录</span><br><span class="line"><span class="built_in">cd</span> TestProject       REM 进入TestProject目录</span><br><span class="line">dmake init c4t2      REM 初始化一个c4t2项目（IV级风险二票）</span><br><span class="line">dmake                REM 编译项目，生成文档</span><br></pre></td></tr></table></figure>
+<p>注：项目目录中存在一个d-makefile，文件名为<code>makefile.yaml</code>（或<code>makefile.yml</code>）。</p>
+<h3 id="3-makefile-yaml文件概述"><a href="#3-makefile-yaml文件概述" class="headerlink" title="3. makefile.yaml文件概述"></a>3. makefile.yaml文件概述</h3><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># makefile.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义需编译生成的目标文档</span></span><br><span class="line"><span class="attr">filename:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">test.docx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">foo.docx</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义生成上述文档所用到的模板文档，与生成文档为一一对应关系</span></span><br><span class="line"><span class="attr">template:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">template1.docx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">template2.docx</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文档源文件，重复、可变的文档部件均定义在下列.md文件中</span></span><br><span class="line"><span class="attr">source:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">abstract.md</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">safety_measure.md</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-dmake项目支持的Markdown语法"><a href="#4-dmake项目支持的Markdown语法" class="headerlink" title="4. dmake项目支持的Markdown语法"></a>4. dmake项目支持的Markdown语法</h3><table>
+<thead>
+<tr>
+<th>语法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>三级标题</td>
+<td>用于字段定义, 值应紧随在下面的行中</td>
+</tr>
+<tr>
+<td>列表</td>
+<td>支持有序列表（含多级列表）</td>
+</tr>
+<tr>
+<td>图片</td>
+<td>支持jpg, png, gif, bmp, vsd, vsdx图片的插入</td>
+</tr>
+<tr>
+<td>引用</td>
+<td>从其他字段定义的值中引用到本字段，或从外部导入Word文档</td>
+</tr>
+<tr>
+<td>表格</td>
+<td>支持单列单元格文本插入</td>
+</tr>
+<tr>
+<td>注释</td>
+<td>同HTML注释，&lt;!– 注释内容 –&gt; ，可跨行，不支持嵌套注释</td>
+</tr>
+</tbody></table>
+<h3 id="5-md源文件示例"><a href="#5-md源文件示例" class="headerlink" title="5. md源文件示例"></a>5. md源文件示例</h3><figure class="highlight md"><table><tr><td class="code"><pre><span class="line"><span class="section">### IMG<span class="emphasis">_TEST</span></span></span><br><span class="line"><span class="emphasis"><span class="section">![<span class="string">image-title</span>](<span class="link">../img/test.jpg</span>) </span></span></span><br><span class="line"><span class="emphasis"><span class="section">![<span class="string">image-title</span>](<span class="link">../img/test2.vsd#2</span>)   &lt;!--将img/test2.vsd文件的第2页转换为jpeg并插入到文档中（vsd文件首页编号为1） --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">![<span class="string">image-title</span>](<span class="link">../img/test3.vsd</span>)     &lt;!-- 将img/test3.vsd文件的第1页转换为jpeg并插入到文档中--&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!-- 注意，图片的插入必须使用IMG_</span>前缀 --&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### CL<span class="emphasis">_LIST</span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!-- 单列单元格列表，以下列表将被插入到MergedField所在列，并自动插入新的行 --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">- Item 1</span></span></span><br><span class="line"><span class="emphasis"><span class="section">- <span class="strong">**Item 2**</span></span></span></span><br><span class="line"><span class="emphasis"><span class="section">- Item 3</span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!-- 列表项目以 - 为前缀，并支持加粗格式符 --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">&lt;!--三级标题中的[ ]内为备注描述文本，可选项 --&gt;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">### SURVEY_</span>DATE[查勘日期]</span></span><br><span class="line">2022-04-01 12:00</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### LOCATION[地点]</span></span><br><span class="line">Somewhere</span><br><span class="line"></span><br><span class="line"><span class="section">### TEST<span class="emphasis">_FIELD</span></span></span><br><span class="line"><span class="emphasis"><span class="section">[](<span class="link">#LOCATION</span>)是一个测试引用，它引用自###LOCATION块</span></span></span><br><span class="line"><span class="emphasis"><span class="section">[](<span class="link">#LIST[2]</span>)引用了一个列表中的第2子项（从1开始）</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">### FILE_</span>IMPORT</span></span><br><span class="line">[<span class="string">$IMPORT</span>](<span class="link">../assets/src.docx</span>)     &lt;!-- 注意，当从外部导入文档时，必须使用$IMPORT关键字 --&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-约定优于配置"><a href="#6-约定优于配置" class="headerlink" title="6. 约定优于配置"></a>6. 约定优于配置</h3><p>我们约定dmake项目有如下目录结构，请勿修改目录名或文件名：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">工作目录</span><br><span class="line">  ├─img</span><br><span class="line">  ├─md</span><br><span class="line">  ├─template</span><br><span class="line">  └─makefile.yaml</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>img</td>
+<td>图片存放目录</td>
+</tr>
+<tr>
+<td>md</td>
+<td>Markdown源文件存放目录</td>
+</tr>
+<tr>
+<td>template</td>
+<td>模板文件存放目录</td>
+</tr>
+<tr>
+<td>makefile.yaml</td>
+<td>自动化生成文件</td>
+</tr>
+</tbody></table>
+<p>此外，在md文件中引用图片、文件时，以md目录为起点</p>
+<h3 id="7-dmake-命令行用法"><a href="#7-dmake-命令行用法" class="headerlink" title="7. dmake 命令行用法"></a>7. dmake 命令行用法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化dmake工作目录</span></span><br><span class="line">dmake init c3t1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译并生成文档</span></span><br><span class="line">dmake</span><br><span class="line">dmake make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向项目工作目录中添加已安装的模板</span></span><br><span class="line">dmake add template test_template</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出本机已安装的模板</span></span><br><span class="line">dmake list template </span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装dmake（将dmake目录添加到PATH环境变量，需在dmake目录下执行）</span></span><br><span class="line">dmake install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 卸载dmake（仅将dmake目录从PATH环境变量中移除）</span></span><br><span class="line">dmake uninstall</span><br></pre></td></tr></table></figure>
+<p>注：当dmake遇到错误命令时会显示帮助信息，可供查看</p>
+]]></content>
+      <tags>
+        <tag>document</tag>
+        <tag>makefile</tag>
+        <tag>auto-generate</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo博客部署出错</title>
+    <url>/2023/08/14/hexo-trouble-shooting/</url>
+    <content><![CDATA[<p>很久没有写博客了，突然发现部署到github都出问题了。这个配置我没有动过，不知道什么原因。在网上搜索了很多资料，现在问题解决了，记录下来。<span id="more"></span></p>
+<h3 id="1-Error-Spawn-failed"><a href="#1-Error-Spawn-failed" class="headerlink" title="1. Error: Spawn failed"></a>1. Error: Spawn failed</h3><p>这个错误的症状是在执行部署命令<code>hexo d</code>后，控制台大量刷文件换行符的告警，大量的文件将有LF换行符替换为CRLF换行符。<br><img src="/2023/08/14/hexo-trouble-shooting/spawn-failed-error.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">FATAL &#123;</span><br><span class="line">  err: Error: Spawn failed</span><br><span class="line">      at ChildProcess.&lt;anonymous&gt; (E:\Documents\Git Projects\Remote\hexo-blog\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">      at ChildProcess.emit (node:events:390:28)</span><br><span class="line">      at ChildProcess.cp.emit (E:\Documents\Git Projects\Remote\hexo-blog\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">      at Process.ChildProcess._handle.onexit (node:internal/child_process:290:12) &#123;</span><br><span class="line">    code: 128</span><br><span class="line">  &#125;</span><br><span class="line">&#125; Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: %s https://hexo.io/docs/troubleshooting.html</span></span><br></pre></td></tr></table></figure>
+<p>解决方式如下：将hexo博客目录下的.deploy_git目录删除，再执行git命令，关闭自动替换换行符功能即可。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">##进入站点根目录</span></span><br><span class="line"><span class="built_in">cd</span> /usr/local/src/hexo-blog/</span><br><span class="line"></span><br><span class="line"><span class="comment">##删除git提交内容文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf .deploy_git/</span><br><span class="line"></span><br><span class="line"><span class="comment">##执行</span></span><br><span class="line">git config --global core.autocrlf <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##最后</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-fatal-unable-to-auto-detect-email-address"><a href="#2-fatal-unable-to-auto-detect-email-address" class="headerlink" title="2. fatal: unable to auto-detect email address"></a>2. fatal: unable to auto-detect email address</h3><p>报错如图：<br><img src="/2023/08/14/hexo-trouble-shooting/username-missing.png"><br>解决方法为进入hexo博客所在目录，在子目录<code>.deploy_git/.git</code>目录中编辑<code>config</code>文件，添加如下配置节</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[user]</span><br><span class="line">    email=<span class="string">&quot;Your Github sign in email&quot;</span></span><br><span class="line">    name=<span class="string">&quot;Your Github username&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>异常</tag>
+        <tag>GitHub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VirtualBox中Windows7虚拟机运行缓慢的解决办法</title>
+    <url>/2022/06/11/solution-to-slow-win7-on-virtual-box/</url>
+    <content><![CDATA[<p>两三年之前装过一个32位的Windows XP，那时虚拟机用的还是VirtualBox 5.1.x，运行上无任何问题，十分流畅，虚拟机的屏幕分辨率也可以达到2K。最近需要安装一个Windows 7的虚拟机，心想跟以前安装的也不会有什么区别，怎料想这个64位的Windows 7虚拟机着实折腾了我两三天。其中查阅了好些博客，最终还是在VirtualBox的官方论坛上找到了原因和解决办法。<span id="more"></span></p>
+<h3 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h3><p>首先需要明确的是，在写下本文的2022年这个时间点，一台分配了2G内存，2核CPU以及128M显存的虚拟机用来运行Windows 7可以说是如丝般顺滑。如果你发现虚拟机安装系统时很卡、鼠标跳动、不跟手，系统安装完毕后进入系统也十分卡顿甚至直接卡死在进入系统前的Windows徽标界面，那么本文将有所帮助。而其他诸如更改声音控制芯片<a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">[1]</a>、显卡控制器选择<code>VBoxSVGA</code>而不是<code>VBoxVGA</code><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">[2]</a>以及安装VirtualBox GuestAddtion增强工具<a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">[3]</a>这些尝试都请在完成了官方论坛上的指南且无效的前提下再进行。</p>
+<h3 id="原因及解决办法"><a href="#原因及解决办法" class="headerlink" title="原因及解决办法"></a>原因及解决办法</h3><p>这个问题的产生根源是通常我们的宿主机系统(Windows平台)开启了Hyper-V，其优先级更高，使得VirtualBox，VMware等虚拟机竞争不到资源去运行虚拟机，所以出现异常卡顿的情况。而在中文互联网上搜索“VirtualBox卡顿”这样的关键词时搜索出来的却是上面那一堆无用的解决办法。而科学上网后用英文搜一下，很容易就得到了这样的结果：<br><img src="/2022/06/11/solution-to-slow-win7-on-virtual-box/post1.png" alt="post1"><br><img src="/2022/06/11/solution-to-slow-win7-on-virtual-box/post2.png" alt="post2"><br>注意到图1的Won’t even boot，跟我遇到的情况一样。而图2就给出了原因和解决办法。<br>简单来说，如果你发现虚拟机启动之后虚拟机窗口右下角有一个乌龟一样的图标：<img src="https://www.virtualbox.org/export/80012/vbox/trunk/src/VBox/Frontends/VirtualBox/images/vm_execution_engine_native_api_16px.png" style="display:inline"/>，就意味着虚拟机现在运行得十分缓慢，而这通常是因为Hyper-V没有完全禁用造成的。除了在控制面板的“启用或关闭Windows功能”里将Hyper-V相关的选项全部取消勾选以外，根据官方论坛里的帖子，还需要进行以下操作：</p>
+<ol>
+<li>关闭所有程序，关闭宿主机，彻底断电后重启（个人感觉这一步过于激进，其实只关闭VirtualBox也成功了）。</li>
+<li>确认下列进程或程序没有运行：<ol>
+<li>DeviceGuard</li>
+<li>CredentialGuard</li>
+<li>Windows Defender’s Core Isolation</li>
+</ol>
+</li>
+<li>以管理员权限执行以下命令：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bcdedit /set hypervisorlaunchtype off</span><br><span class="line">DISM /Online /Disable-Feature:Microsoft-Hyper-V</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>关机并重启（原文要求断电10s以上）</li>
+<li>再次运行虚拟机，如果原先绿色乌龟图标的位置上变成了<img src="https://www.virtualbox.org/export/76284/vbox/trunk/src/VBox/Frontends/VirtualBox/images/vtx_amdv_16px.png" style="display:inline"/> 这样的V字型图标即表明虚拟机现在运行正常。</li>
+</ol>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>[1]<a class="link"   href="https://www.cnblogs.com/z-books/p/15424350.html" >VirtualBox 6.1 运行win7卡死 卡顿<i class="fas fa-external-link-alt"></i></a></p>
+<p>[2]<a class="link"   href="http://www.4k8k.xyz/article/wx_lanyu/105436154" >解决VirtualBox虚拟机安装windwos 操作卡顿的问题_lanyu96-程序员资料_virtualbox运行win10很卡<i class="fas fa-external-link-alt"></i></a></p>
+<p>[3]<a class="link"   href="https://forums.virtualbox.org/viewtopic.php?t=100738" >Windows 7 VM Is EXTREMELY slow: (Wont even boot!)<i class="fas fa-external-link-alt"></i></a></p>
+<p>[4]<a class="link"   href="https://forums.virtualbox.org/viewtopic.php?f=25&t=99390" >Attempting fall back to NEM (Hyper-V is active)<i class="fas fa-external-link-alt"></i></a></p>
+]]></content>
+      <tags>
+        <tag>VirtualBox</tag>
+        <tag>VM</tag>
+        <tag>Hyper-V</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用NodeJS进行截图</title>
+    <url>/2022/06/08/take-screenshot-via-nodejs/</url>
+    <content><![CDATA[<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>工作中，产生了这样一个需求：想要访问一个网站，并在3个及以上的URL下全屏截图保存到本地。初步了解了一下这方面的现成方案：</p>
+<ol>
+<li>使用Chrome –headless</li>
+<li>使用puttepeer，这是方案1的进阶版</li>
+</ol>
+<p>但是很可惜，经过进一步的与对方沟通，他们要求不仅是把网页截图下来，还需要把浏览器，包括地址栏都要截取下来，防止上级部门怪罪下来说他们伪造截图。这样上面的两种方法就都行不通了——它们都只能截取网页本身，也就是<code>&lt;html&gt;  …… &lt;/html&gt;</code>标签之间，渲染后的图片。<br>想着本来都已经把puttepeer安装上了，也懒得转Python了，索性就NodeJS三两下搞定吧。<span id="more"></span> </p>
+<h3 id="依赖项及说明"><a href="#依赖项及说明" class="headerlink" title="依赖项及说明"></a>依赖项及说明</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">├── cheerio@1.0.0-rc.11</span><br><span class="line">├── open@8.4.0</span><br><span class="line">├── screenshot-desktop@1.12.7</span><br><span class="line">└── sync-request@6.1.0</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>对方事后要求在Windows 7系统上运行，无奈只能选择NodeJS v13.x进行开发。（NodeJS从v14开始不再支持Windows 7）</li>
+<li>cheerio：HTML解析，可以加载远程页面，也可以加载HTML字符串。由于有几个页面需要先爬取URL再截图，故需要此包。</li>
+<li>open：一个封装后的包，功能主要是跨平台打开浏览器及URL，或者是打开文件，我的程序用来打开浏览器。</li>
+<li>screenshot-desktop：截图工具包，只需要一个 <code>screenshot(filename)</code> 就可以把截图保存下来，非常方便。</li>
+<li>sync-request：此包实际上已停止维护，且作者也建议使用 <code>then-request</code> ，但由于需要等待网页加载完成再进行截图，最方便的方式就是使用同步请求，等请求返回，拿到一组URL后，再逐一打开网页并截图。</li>
+</ol>
+<h3 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h3><ol>
+<li>一些常量定义及初始化工作，如保存截图的文件夹的创建。</li>
+<li>打开URL1，等待一个延时后截图并保存。</li>
+<li>打开URL2，等待一个延时后截图并保存。</li>
+<li>爬取URL2中的页面数据，提取出后续需要截图的URL列表。</li>
+<li>逐一访问URL列表中的地址，重复步骤2或3。</li>
+<li>全部截图完毕后，打开一个finish.html页面，提醒用户工作已全部完毕。</li>
+</ol>
+<h3 id="一些意外"><a href="#一些意外" class="headerlink" title="一些意外"></a>一些意外</h3><p>由于这类网站的一贯作风，网页写得十分地凑合。前面提到的URL2是一个列表，里面有至多12行数据，再多就通过底部的分页栏进行分页。但在访问这个页面的时候，其实服务器就把全部数据都从数据库中取出来，以Javascript字符串的形式输出到HTML页面上，甚至已经是html代码了，见下图：<br><img src="/2022/06/08/take-screenshot-via-nodejs/code-fragment.png"><br>而我后续要访问的页面就在这里面，即<code>&lt;a href=&quot;xxx&quot;&gt;&lt;/a&gt;</code>，没办法，只能把这段字符串形式的HTML代码抓取下来，放进cheerio里面把URL提取出来再进行后面的操作。</p>
+<h3 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h3><p>参见：<a class="link"   href="https://github.com/TscCai/WeatherScreenshot" >WeatherScreenshot-TscCai<i class="fas fa-external-link-alt"></i></a></p>
+]]></content>
+      <tags>
+        <tag>NodeJS</tag>
+        <tag>截图</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面向虚拟机Wake-on-LAN的Windows服务开发</title>
+    <url>/2023/08/23/windows-service-development-for-vm-wol/</url>
+    <content><![CDATA[<h3 id="为什么是虚拟机WoL？"><a href="#为什么是虚拟机WoL？" class="headerlink" title="为什么是虚拟机WoL？"></a>为什么是虚拟机WoL？</h3><p>我有一台HP MicroServer Gen8服务器，操作系统是Windows Server 2012R2。上面跑了一个VirtualBox的CentOS虚拟机。有的时候我需要通过WoL启动宿主服务器，再启动虚拟机。但我并不是每次启动服务器后都立即启动虚拟机，所以最佳的方式是启动一个服务来监听WoL报文，一旦有匹配上虚拟机MAC的WoL报文达到，就启动虚拟机（通常是采用命令行在后台启动虚拟机，没有窗口界面）。但这个需求似乎很小众，GitHub上这类项目不多，且都是8~10年以上的老项目，还都没有实际代码。另外有一个<a class="link"   href="http://www.yarovy.com/wolvm/index.html" >Wake-On-LAN Virtual Machine<i class="fas fa-external-link-alt"></i></a>，功能完美匹配我的需求，但我从来没有成功启动过，而且这还是个收费软件。</p>
+<p>没办法，只能自己造轮子了。但普通的Windows服务开发我打算略过，我也不过是看了几篇博客和微软的官方文档。这里重点记录一下开发过程中的遇到的一些坑。</p>
+<span id="more"></span>
+<h3 id="Windows服务使用的账号"><a href="#Windows服务使用的账号" class="headerlink" title="Windows服务使用的账号"></a>Windows服务使用的账号</h3><p>首先，因为我使用的是Virtualbox，所以服务的<code>ProcessInstaller</code>中必须将<code>Account</code>属性设为<code>User</code>。否则服务运行在LOCAL_SYSTEM或者LOCAL_SERVICE账号下，这些账号里是没有Virtualbox和相应的虚拟机的<br><img src="/2023/08/23/windows-service-development-for-vm-wol/serviceProcessInstaller.png" alt="ProcessInstaller中的Account属性须设为User"><br>在部署服务时，需要填入安装Virtualbox所使用的账号和密码，即确保服务和Virtualbox都在同一个账号下。而填入的这个账号格式与通常我们登录用的还不一样，具体可在终端里通过命令<code>whoami</code>来确定（使用微软账号时也有效）。<br><img src="/2023/08/23/windows-service-development-for-vm-wol/install.png" alt="服务安装时输入账号"></p>
+<h3 id="SharpPcap抓包过滤器"><a href="#SharpPcap抓包过滤器" class="headerlink" title="SharpPcap抓包过滤器"></a>SharpPcap抓包过滤器</h3><p>SharpPcap的过滤器写法同WireShark，要抓取WoL的Magic Packet，过滤器应为：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">device.Filter = <span class="string">&quot;ether dst FF:FF:FF:FF:FF:FF and udp dst port 9&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="SharpPcap异常退出"><a href="#SharpPcap异常退出" class="headerlink" title="SharpPcap异常退出"></a>SharpPcap异常退出</h3><p>我在部署到服务器后发现，服务只能执行1次启动虚拟机的操作，执行后服务就停止了，虽然打了log，写了系统日志，都没有捕捉到任何异常，十分的诡异。于是，为了防止内部抛出异常把整个服务给拖死，在服务启动后，抓包及后续启动虚拟机的任务不能放在服务的主线程中进行，必须另起一个线程来执行，例如：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="comment">// WoLService.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">VMWoLService</span> : <span class="title">ServiceBase</span></span><br><span class="line">&#123;</span><br><span class="line">    Thread captureThread;</span><br><span class="line">    ICaptureDevice device;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnStart</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 初始化操作，主要包括日志初始化</span></span><br><span class="line">            InitResource();</span><br><span class="line"></span><br><span class="line">            captureThread = <span class="keyword">new</span> Thread(InitCaptureDevice);</span><br><span class="line">            captureThread.Start();</span><br><span class="line"></span><br><span class="line">            tw.WriteLine(<span class="string">$&quot;<span class="subst">&#123;DateTime.Now&#125;</span>: 服务已启动&quot;</span>);</span><br><span class="line">            tw.Flush();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            tw.Write(e.StackTrace);</span><br><span class="line">            tw.Flush();</span><br><span class="line">            EventLog.WriteEntry(e.StackTrace);</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">InitCaptureDevice</span>()</span> &#123;</span><br><span class="line">        <span class="comment">/* </span></span><br><span class="line"><span class="comment">        <span class="doctag">TODO:</span> 1. 初始化SharpPcap，指定要抓包的网卡</span></span><br><span class="line"><span class="comment">              2. 绑定OnPacketArrival事件，用于启动虚拟机</span></span><br><span class="line"><span class="comment">              3. 绑定OnCaptureStopped事件，用于打印日志，查找异常</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，现在服务不会那么轻易挂掉了，但通过日志发现，在启动虚拟机后，抓包的线程就死掉了，抓包也中止了，所以后续无法再响应WoL报文。就这个问题我在开发环境和生产环境进行了4次测试，终于大致确定了问题所在。先罗列一下开发和生产环境的软件配置</p>
+<table>
+<thead>
+<tr>
+<th align="left">环境</th>
+<th align="left">操作系统</th>
+<th align="left">Virtualbox版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">开发环境</td>
+<td align="left">Windows 10 Professional</td>
+<td align="left">7.08</td>
+</tr>
+<tr>
+<td align="left">生产环境</td>
+<td align="left">Windows Server 2012R2</td>
+<td align="left">6.1</td>
+</tr>
+</tbody></table>
+<h4 id="测试方法及结果"><a href="#测试方法及结果" class="headerlink" title="测试方法及结果"></a>测试方法及结果</h4><table>
+<thead>
+<tr>
+<th align="left">编号</th>
+<th align="left">测试方法</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">开发环境中部署服务，多次发送WoL报文</td>
+<td align="left">可反复启动虚拟机，但启动执行完毕会发现<code>CaptureDevice Started: False</code>，但后续仍正常抓包</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">生产环境中部署服务，多次发送WoL报文</td>
+<td align="left">只能启动虚拟机1次，启动后抓包进程立即停止，日志报的中止原因是<code>ErrorWhileCapturing</code></td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">生产环境中部署服务，捕获到WoL报文后什么也不做</td>
+<td align="left">可反复抓取到WoL报文，抓包进程和device均存活</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">生产环境中部署服务，WoL捕获后仅以命令行启动记事本</td>
+<td align="left">一切正常，多次发送WoL报文可反复启动记事本</td>
+</tr>
+</tbody></table>
+<p> 随后我又将生产环境中的Virtualbox升级到7.08，结果依然没有改变。于是，可以初步得出结论，SharpPcap 4.3.0（最后一个支持.NET Framework的版本，目前最新版为6.0）在Windows 2012R2上存在Bug会在Virtualbox启动后异常中止抓包，而且该异常还无法被捕捉到，<code>ErrorWhileCapturing</code>的日志是<code>OnCaptureStopped</code>事件中报出来的。</p>
+<h4 id="折中的解决办法"><a href="#折中的解决办法" class="headerlink" title="折中的解决办法"></a>折中的解决办法</h4><p> 既然SharpPcap没法使用更高的版本，Virtualbox使用了更高的版本也无济于事，只能通过折中的办法来解决了——线程守护&#x2F;看门狗。即在<code>OnCaptureStopped</code>中重启抓包的线程。需要注意的是，不能无脑重启，需要设置一个线程启动失败的计数器，启动失败超过一定次数（我设定的是5次）就不再重启了，打日志出来，然后开摆。否则你的服务可能陷入“线程异常中止——线程重启”的死循环。而一旦线程启动成功，就将应将计数器归零。这是一个十分朴素的看门狗。</p>
+]]></content>
+      <tags>
+        <tag>VirtualBox</tag>
+        <tag>Virtual Machine</tag>
+        <tag>Windows服务</tag>
+        <tag>SharpPcap</tag>
+        <tag>WoL</tag>
+      </tags>
+  </entry>
+</search>

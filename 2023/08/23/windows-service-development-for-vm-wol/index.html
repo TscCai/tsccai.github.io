@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Tsccai">
+    
+    <title>
+        
+            面向虚拟机Wake-on-LAN的Windows服务开发 |
+        
+        Tsccai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"tsccai.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.png","favicon":"/images/logo.svg","article_img_align":"center","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":false},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Tsccai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">面向虚拟机Wake-on-LAN的Windows服务开发</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.png">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Tsccai</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-08-23 22:48:54</span>
+        <span class="mobile">2023-08-23 22:48</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/VirtualBox/">VirtualBox</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Virtual-Machine/">Virtual Machine</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Windows%E6%9C%8D%E5%8A%A1/">Windows服务</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SharpPcap/">SharpPcap</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/WoL/">WoL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h3 id="为什么是虚拟机WoL？"><a href="#为什么是虚拟机WoL？" class="headerlink" title="为什么是虚拟机WoL？"></a>为什么是虚拟机WoL？</h3><p>我有一台HP MicroServer Gen8服务器，操作系统是Windows Server 2012R2。上面跑了一个VirtualBox的CentOS虚拟机。有的时候我需要通过WoL启动宿主服务器，再启动虚拟机。但我并不是每次启动服务器后都立即启动虚拟机，所以最佳的方式是启动一个服务来监听WoL报文，一旦有匹配上虚拟机MAC的WoL报文达到，就启动虚拟机（通常是采用命令行在后台启动虚拟机，没有窗口界面）。但这个需求似乎很小众，GitHub上这类项目不多，且都是8~10年以上的老项目，还都没有实际代码。另外有一个<a class="link"   target="_blank" rel="noopener" href="http://www.yarovy.com/wolvm/index.html" >Wake-On-LAN Virtual Machine<i class="fas fa-external-link-alt"></i></a>，功能完美匹配我的需求，但我从来没有成功启动过，而且这还是个收费软件。</p>
+<p>没办法，只能自己造轮子了。但普通的Windows服务开发我打算略过，我也不过是看了几篇博客和微软的官方文档。这里重点记录一下开发过程中的遇到的一些坑。</p>
+<span id="more"></span>
+<h3 id="Windows服务使用的账号"><a href="#Windows服务使用的账号" class="headerlink" title="Windows服务使用的账号"></a>Windows服务使用的账号</h3><p>首先，因为我使用的是Virtualbox，所以服务的<code>ProcessInstaller</code>中必须将<code>Account</code>属性设为<code>User</code>。否则服务运行在LOCAL_SYSTEM或者LOCAL_SERVICE账号下，这些账号里是没有Virtualbox和相应的虚拟机的<br><img src="/2023/08/23/windows-service-development-for-vm-wol/serviceProcessInstaller.png" alt="ProcessInstaller中的Account属性须设为User"><br>在部署服务时，需要填入安装Virtualbox所使用的账号和密码，即确保服务和Virtualbox都在同一个账号下。而填入的这个账号格式与通常我们登录用的还不一样，具体可在终端里通过命令<code>whoami</code>来确定（使用微软账号时也有效）。<br><img src="/2023/08/23/windows-service-development-for-vm-wol/install.png" alt="服务安装时输入账号"></p>
+<h3 id="SharpPcap抓包过滤器"><a href="#SharpPcap抓包过滤器" class="headerlink" title="SharpPcap抓包过滤器"></a>SharpPcap抓包过滤器</h3><p>SharpPcap的过滤器写法同WireShark，要抓取WoL的Magic Packet，过滤器应为：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">device.Filter = <span class="string">&quot;ether dst FF:FF:FF:FF:FF:FF and udp dst port 9&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="SharpPcap异常退出"><a href="#SharpPcap异常退出" class="headerlink" title="SharpPcap异常退出"></a>SharpPcap异常退出</h3><p>我在部署到服务器后发现，服务只能执行1次启动虚拟机的操作，执行后服务就停止了，虽然打了log，写了系统日志，都没有捕捉到任何异常，十分的诡异。于是，为了防止内部抛出异常把整个服务给拖死，在服务启动后，抓包及后续启动虚拟机的任务不能放在服务的主线程中进行，必须另起一个线程来执行，例如：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WoLService.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">VMWoLService</span> : <span class="title">ServiceBase</span></span><br><span class="line">&#123;</span><br><span class="line">    Thread captureThread;</span><br><span class="line">    ICaptureDevice device;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnStart</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 初始化操作，主要包括日志初始化</span></span><br><span class="line">            InitResource();</span><br><span class="line"></span><br><span class="line">            captureThread = <span class="keyword">new</span> Thread(InitCaptureDevice);</span><br><span class="line">            captureThread.Start();</span><br><span class="line"></span><br><span class="line">            tw.WriteLine(<span class="string">$&quot;<span class="subst">&#123;DateTime.Now&#125;</span>: 服务已启动&quot;</span>);</span><br><span class="line">            tw.Flush();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            tw.Write(e.StackTrace);</span><br><span class="line">            tw.Flush();</span><br><span class="line">            EventLog.WriteEntry(e.StackTrace);</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">InitCaptureDevice</span>()</span> &#123;</span><br><span class="line">        <span class="comment">/* </span></span><br><span class="line"><span class="comment">        <span class="doctag">TODO:</span> 1. 初始化SharpPcap，指定要抓包的网卡</span></span><br><span class="line"><span class="comment">              2. 绑定OnPacketArrival事件，用于启动虚拟机</span></span><br><span class="line"><span class="comment">              3. 绑定OnCaptureStopped事件，用于打印日志，查找异常</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，现在服务不会那么轻易挂掉了，但通过日志发现，在启动虚拟机后，抓包的线程就死掉了，抓包也中止了，所以后续无法再响应WoL报文。就这个问题我在开发环境和生产环境进行了4次测试，终于大致确定了问题所在。先罗列一下开发和生产环境的软件配置</p>
+<table>
+<thead>
+<tr>
+<th align="left">环境</th>
+<th align="left">操作系统</th>
+<th align="left">Virtualbox版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">开发环境</td>
+<td align="left">Windows 10 Professional</td>
+<td align="left">7.08</td>
+</tr>
+<tr>
+<td align="left">生产环境</td>
+<td align="left">Windows Server 2012R2</td>
+<td align="left">6.1</td>
+</tr>
+</tbody></table>
+<h4 id="测试方法及结果"><a href="#测试方法及结果" class="headerlink" title="测试方法及结果"></a>测试方法及结果</h4><table>
+<thead>
+<tr>
+<th align="left">编号</th>
+<th align="left">测试方法</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">开发环境中部署服务，多次发送WoL报文</td>
+<td align="left">可反复启动虚拟机，但启动执行完毕会发现<code>CaptureDevice Started: False</code>，但后续仍正常抓包</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">生产环境中部署服务，多次发送WoL报文</td>
+<td align="left">只能启动虚拟机1次，启动后抓包进程立即停止，日志报的中止原因是<code>ErrorWhileCapturing</code></td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">生产环境中部署服务，捕获到WoL报文后什么也不做</td>
+<td align="left">可反复抓取到WoL报文，抓包进程和device均存活</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">生产环境中部署服务，WoL捕获后仅以命令行启动记事本</td>
+<td align="left">一切正常，多次发送WoL报文可反复启动记事本</td>
+</tr>
+</tbody></table>
+<p> 随后我又将生产环境中的Virtualbox升级到7.08，结果依然没有改变。于是，可以初步得出结论，SharpPcap 4.3.0（最后一个支持.NET Framework的版本，目前最新版为6.0）在Windows 2012R2上存在Bug会在Virtualbox启动后异常中止抓包，而且该异常还无法被捕捉到，<code>ErrorWhileCapturing</code>的日志是<code>OnCaptureStopped</code>事件中报出来的。</p>
+<h4 id="折中的解决办法"><a href="#折中的解决办法" class="headerlink" title="折中的解决办法"></a>折中的解决办法</h4><p> 既然SharpPcap没法使用更高的版本，Virtualbox使用了更高的版本也无济于事，只能通过折中的办法来解决了——线程守护&#x2F;看门狗。即在<code>OnCaptureStopped</code>中重启抓包的线程。需要注意的是，不能无脑重启，需要设置一个线程启动失败的计数器，启动失败超过一定次数（我设定的是5次）就不再重启了，打日志出来，然后开摆。否则你的服务可能陷入“线程异常中止——线程重启”的死循环。而一旦线程启动成功，就将应将计数器归零。这是一个十分朴素的看门狗。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：面向虚拟机Wake-on-LAN的Windows服务开发</li>
+        <li>本文作者：Tsccai</li>
+        <li>创建时间：2023-08-23 22:48:54</li>
+        <li>
+            本文链接：https://tsccai.github.io/2023/08/23/windows-service-development-for-vm-wol/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/VirtualBox/">#VirtualBox</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Virtual-Machine/">#Virtual Machine</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/Windows%E6%9C%8D%E5%8A%A1/">#Windows服务</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/SharpPcap/">#SharpPcap</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/WoL/">#WoL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2024/12/08/capture-packet-with-vlan-in-wireshark/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">在Wireshark中捕获带VLAN的报文</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/08/14/hexo-trouble-shooting/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Hexo博客部署出错</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Tsccai</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BAWoL%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么是虚拟机WoL？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E6%9C%8D%E5%8A%A1%E4%BD%BF%E7%94%A8%E7%9A%84%E8%B4%A6%E5%8F%B7"><span class="nav-number">2.</span> <span class="nav-text">Windows服务使用的账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SharpPcap%E6%8A%93%E5%8C%85%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">SharpPcap抓包过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SharpPcap%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA"><span class="nav-number">4.</span> <span class="nav-text">SharpPcap异常退出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E5%8F%8A%E7%BB%93%E6%9E%9C"><span class="nav-number">4.1.</span> <span class="nav-text">测试方法及结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%98%E4%B8%AD%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">折中的解决办法</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+<div class="post-scripts">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+
+</body>
+</html>
