@@ -4,9 +4,9 @@
     <title>在Wireshark中捕获带VLAN的报文</title>
     <url>/2024/12/08/capture-packet-with-vlan-in-wireshark/</url>
     <content><![CDATA[<p>中文互联网上一搜这个问题，全是CSDN的垃圾内容。基本都是针对Wireshark 2.x以前的了，已经过时了。还得是在Wireshark的官方论坛才找到答案。<span id="more"></span></p>
-<h3 id="Wireshark-4-x后VLAN抓包的变化"><a href="#Wireshark-4-x后VLAN抓包的变化" class="headerlink" title="Wireshark 4.x后VLAN抓包的变化"></a>Wireshark 4.x后VLAN抓包的变化</h3><p>Wireshark 4.x后，在首选项的<code>外观-列</code>中再也无法添加一个类型叫<code>802.1Q VLAN id</code>的列了（如下图）。<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/wireshark-prefernce-old.png" alt="wireshark-old-preference"><br>取而代之的，则是添加一个类型为<code>Custom</code>（自定义）的列，并在<code>Fields</code>(字段)处填写<code>vlan.id</code>（填写过程中会有自动补全提示）。<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/wireshark-prefernce.png" alt="wireshark-prefernce"></p>
-<h3 id="正确的网卡抓包设置"><a href="#正确的网卡抓包设置" class="headerlink" title="正确的网卡抓包设置"></a>正确的网卡抓包设置</h3><p>需要捕获VLAN的网口需要设置为混杂模式</p>
-<h3 id="设备管理器中的网卡设置"><a href="#设备管理器中的网卡设置" class="headerlink" title="设备管理器中的网卡设置"></a>设备管理器中的网卡设置</h3><p>网卡要开启VLAN和有优先级（不同网卡，这个配置项的名称不同）</p>
+<h3 id="Wireshark-4-x后VLAN抓包的变化"><a href="#Wireshark-4-x后VLAN抓包的变化" class="headerlink" title="Wireshark 4.x后VLAN抓包的变化"></a>Wireshark 4.x后VLAN抓包的变化</h3><p>Wireshark 4.x后，在首选项的<code>外观-列</code>中再也无法添加一个类型叫<code>802.1Q VLAN id</code>的列了（如下图）。<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/wireshark-prefernce-old.png" alt="wireshark-old-preference"><br>取而代之的，则是添加一个类型为<code>Custom</code>（自定义）的列，并在<code>Fields</code>（字段）处填写<code>vlan.id</code>（填写过程中会有自动补全提示）。<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/wireshark-prefernce.png" alt="wireshark-prefernce"></p>
+<h3 id="正确的网卡抓包设置"><a href="#正确的网卡抓包设置" class="headerlink" title="正确的网卡抓包设置"></a>正确的网卡抓包设置</h3><p>需要捕获VLAN的网口需要设置为混杂模式<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/capture-config.png"></p>
+<h3 id="设备管理器中的网卡设置"><a href="#设备管理器中的网卡设置" class="headerlink" title="设备管理器中的网卡设置"></a>设备管理器中的网卡设置</h3><p>网卡要开启VLAN和有优先级（不同网卡，这个配置项的名称不同）<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/enable-vlan.png"></p>
 <h3 id="修改注册表"><a href="#修改注册表" class="headerlink" title="修改注册表"></a>修改注册表</h3><p>前3项都完成了但还不能成功的，则需要修改注册表。通过设备管理器，在注册表里找到对应的网卡，然后做如下修改：<br><img src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ethernet-adapter-config.png"><br>查看 MonitorModeEnabled的值是否为1，PreserveVlanInfoInRxPacket的值是否为1.<br>若不存在，则新建 DWORD（32位），文件名分别为MonitorModeEnabled 、PreserveVlanInfoInRxPacket，设置值为1。设置完后重启电脑。</p>
 ]]></content>
       <tags>
