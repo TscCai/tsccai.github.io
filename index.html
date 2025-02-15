@@ -14,17 +14,31 @@
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
 
-    <script id="hexo-configurations">
-    let KEEP = window.KEEP || {};
-    KEEP.hexo_config = {"hostname":"tsccai.github.io","root":"/","language":"zh-CN","path":"search.xml"};
-    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.png","favicon":"/images/logo.svg","article_img_align":"center","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":true,"preload":false},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
-    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"tsccai.github.io","root":"/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"Tsccai's Blog","author":"Tsccai","avatar":"/images/avatar.png","logo":"/images/logo.svg","favicon":"/images/logo.svg"},"menu":{"home":"/                        || fa-solid fa-home","archives":"/archives            || fa-solid fa-box-archive","tags":"/tags                    || fa-solid fa-tags"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"local_search":{"enable":false,"preload":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":false},"footer":{"since":2022,"word_count":false,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
   </script>
-<meta name="generator" content="Hexo 6.2.0"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -35,61 +49,73 @@
 </div>
 
 
-<main class="page-container">
 
+<main class="page-container border-box">
+    <!-- home first screen  -->
     
 
-    <div class="page-main-content">
-
+    <!-- page content -->
+    <div class="page-main-content border-box is-home">
         <div class="page-main-content-top">
-            <header class="header-wrapper">
-
-    <div class="header-content">
-        <div class="left">
             
-            <a class="logo-title" href="/">
-                Tsccai&#39;s Blog
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Tsccai&#39;s Blog
             </a>
         </div>
 
-        <div class="right">
-            <div class="pc">
-                <ul class="menu-list">
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
                     
-                        <li class="menu-item">
-                            <a class="active"
-                               href="/"
-                            >
+                        
+                        <li class="menu-item flex-start border-box active">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-home"></i>
+                                
                                 首页
+                                
                             </a>
+                            
                         </li>
                     
-                        <li class="menu-item">
-                            <a class=""
-                               href="/archives"
-                            >
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                
                                 归档
+                                
                             </a>
+                            
                         </li>
                     
-                        <li class="menu-item">
-                            <a class=""
-                               href="/tags"
-                            >
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                    <i class="menu-text-color menu-icon fa-solid fa-tags"></i>
+                                
                                 标签
+                                
                             </a>
+                            
                         </li>
                     
-                    
-                        <li class="menu-item search search-popup-trigger">
-                            <i class="fas fa-search"></i>
-                        </li>
                     
                 </ul>
             </div>
-            <div class="mobile">
-                
-                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+            <div class="mobile border-box flex-start">
                 
                 <div class="icon-item menu-bar">
                     <div class="menu-bar-middle"></div>
@@ -99,21 +125,54 @@
     </div>
 
     <div class="header-drawer">
-        <ul class="drawer-menu-list">
+        <ul class="drawer-menu-list border-box">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="active"
-                       href="/">首页</a>
+                
+                <li class="drawer-menu-item border-box not-sub-menu active">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-home"></i>
+                                </span>
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
                 </li>
             
-                <li class="drawer-menu-item flex-center">
-                    <a class=""
-                       href="/archives">归档</a>
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-box-archive"></i>
+                                </span>
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
                 </li>
             
-                <li class="drawer-menu-item flex-center">
-                    <a class=""
-                       href="/tags">标签</a>
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                                <span class="menu-icon-wrap border-box flex-center">
+                                    <i class="drawer-menu-text-color menu-icon fa-solid fa-tags"></i>
+                                </span>
+                            
+                            标签
+                        </a>
+                        
+                    </label>
+                    
                 </li>
             
         </ul>
@@ -126,509 +185,715 @@
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="page-main-content-middle border-box">
 
-            <div class="main-content">
-
+            <div class="main-content border-box">
                 
+
                     <div class="home-content-container fade-in-down-animation">
-    <ul class="home-article-list">
+    
+    <ul class="home-post-list border-box">
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2024/12/08/capture-packet-with-vlan-in-wireshark/">
-                        在Wireshark中捕获带VLAN的报文
-                    </a>
-                </h3>
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2025/02/15/ctf-notes-01-base64-steganography/">
+                            CTF笔记 01 - Base64编码隐写术
+                        </a>
+                    </h3>
 
-                <div class="home-article-content markdown-body">
-                    
-                        <p>中文互联网上一搜这个问题，全是CSDN的垃圾内容。基本都是针对Wireshark 2.x以前的了，已经过时了。还得是在Wireshark的官方论坛才找到答案。
-                    
-                </div>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>看《CTF那些事》，17页的一个例题，记录一下。这是一道杂项题，主要考察Base64编码的隐写术。<br>由于Base64编码是每6个bit编码为一个可打印字符，与ASCII码编码不同。当且仅当待编码的ASCII字符占用字节为3的倍数时，Base64编码不会产生填充字符<code>=</code>。而当Base64编码后的字符末尾有1个<code>=</code>时，该行最后一个非<code>=</code>字符可产生2bit的隐写空间；当编码后的字符末尾有2个<code>=</code>时，则可产生4bit的隐写空间。那么，若使用Base64隐写术来藏flag，则需要大量的Base64编码文本，这是这类题的一个特征。
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Sun Dec 08 2024 15:35:38 GMT+0800">2024-12-08</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Feb 16 2025 00:07:52 GMT+0800"
+                >2025-02-16 00:07:52</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/Wireshark/">Wireshark</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/CTF/">CTF</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/VLAN/">VLAN</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Base64%E7%BC%96%E7%A0%81/">Base64编码</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E6%8A%93%E5%8C%85/">抓包</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E9%9A%90%E5%86%99%E6%9C%AF/">隐写术</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2024/12/08/capture-packet-with-vlan-in-wireshark/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2025/02/15/ctf-notes-01-base64-steganography/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2023/08/23/windows-service-development-for-vm-wol/">
-                        面向虚拟机Wake-on-LAN的Windows服务开发
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
+                <div class="home-post-item-bottom border-box">
                     
-                        <h3 id="为什么是虚拟机WoL？"><a href="#为什么是虚拟机WoL？" class="headerlink" title="为什么是虚拟机WoL？"></a>为什么是虚拟机WoL？</h3><p>我有一台HP MicroServer Gen8服务器，操作系统是Windows Server 2012R2。上面跑了一个VirtualBox的CentOS虚拟机。有的时候我需要通过WoL启动宿主服务器，再启动虚拟机。但我并不是每次启动服务器后都立即启动虚拟机，所以最佳的方式是启动一个服务来监听WoL报文，一旦有匹配上虚拟机MAC的WoL报文达到，就启动虚拟机（通常是采用命令行在后台启动虚拟机，没有窗口界面）。但这个需求似乎很小众，GitHub上这类项目不多，且都是8~10年以上的老项目，还都没有实际代码。另外有一个<a class="link"   target="_blank" rel="noopener" href="http://www.yarovy.com/wolvm/index.html" >Wake-On-LAN Virtual Machine<i class="fas fa-external-link-alt"></i></a>，功能完美匹配我的需求，但我从来没有成功启动过，而且这还是个收费软件。</p>
+                    <h3 class="home-post-title border-box">
+                        <a href="/2024/12/08/capture-packet-with-vlan-in-wireshark/">
+                            在Wireshark中捕获带VLAN的报文
+                        </a>
+                    </h3>
+
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>中文互联网上一搜这个问题，全是CSDN的垃圾内容。基本都是针对Wireshark 2.x以前的了，已经过时了。还得是在Wireshark的官方论坛才找到答案。
+                        
+                    </div>
+
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
+        
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Feb 16 2025 00:07:52 GMT+0800"
+                >2025-02-16 00:07:52</span>
+            </span>
+        
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Wireshark/">Wireshark</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/VLAN/">VLAN</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E6%8A%93%E5%8C%85/">抓包</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+    </div>
+
+    
+        <a class="home-read-more" href="/2024/12/08/capture-packet-with-vlan-in-wireshark/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-post-item">
+
+                
+
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2023/08/23/windows-service-development-for-vm-wol/">
+                            面向虚拟机Wake-on-LAN的Windows服务开发
+                        </a>
+                    </h3>
+
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <h3 id="为什么是虚拟机WoL？"><a href="#为什么是虚拟机WoL？" class="headerlink" title="为什么是虚拟机WoL？"></a>为什么是虚拟机WoL？</h3><p>我有一台HP MicroServer Gen8服务器，操作系统是Windows Server 2012R2。上面跑了一个VirtualBox的CentOS虚拟机。有的时候我需要通过WoL启动宿主服务器，再启动虚拟机。但我并不是每次启动服务器后都立即启动虚拟机，所以最佳的方式是启动一个服务来监听WoL报文，一旦有匹配上虚拟机MAC的WoL报文达到，就启动虚拟机（通常是采用命令行在后台启动虚拟机，没有窗口界面）。但这个需求似乎很小众，GitHub上这类项目不多，且都是8~10年以上的老项目，还都没有实际代码。另外有一个<a class="link"   target="_blank" rel="noopener" href="http://www.yarovy.com/wolvm/index.html" >Wake-On-LAN Virtual Machine<i class="fas fa-external-link-alt"></i></a>，功能完美匹配我的需求，但我从来没有成功启动过，而且这还是个收费软件。</p>
 <p>没办法，只能自己造轮子了。但普通的Windows服务开发我打算略过，我也不过是看了几篇博客和微软的官方文档。这里重点记录一下开发过程中的遇到的一些坑。</p>
-                    
-                </div>
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Wed Aug 23 2023 22:48:54 GMT+0800">2023-08-23</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Dec 08 2024 15:00:05 GMT+0800"
+                >2024-12-08 15:00:05</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/VirtualBox/">VirtualBox</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/VirtualBox/">VirtualBox</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/Virtual-Machine/">Virtual Machine</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Virtual-Machine/">Virtual Machine</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/Windows%E6%9C%8D%E5%8A%A1/">Windows服务</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Windows%E6%9C%8D%E5%8A%A1/">Windows服务</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/SharpPcap/">SharpPcap</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/SharpPcap/">SharpPcap</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/WoL/">WoL</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/WoL/">WoL</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2023/08/23/windows-service-development-for-vm-wol/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2023/08/23/windows-service-development-for-vm-wol/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2023/08/14/hexo-trouble-shooting/">
-                        Hexo博客部署出错
-                    </a>
-                </h3>
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2023/08/14/hexo-trouble-shooting/">
+                            Hexo博客部署出错
+                        </a>
+                    </h3>
 
-                <div class="home-article-content markdown-body">
-                    
-                        <p>很久没有写博客了，突然发现部署到github都出问题了。这个配置我没有动过，不知道什么原因。在网上搜索了很多资料，现在问题解决了，记录下来。
-                    
-                </div>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>很久没有写博客了，突然发现部署到github都出问题了。这个配置我没有动过，不知道什么原因。在网上搜索了很多资料，现在问题解决了，记录下来。
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Aug 14 2023 22:12:03 GMT+0800">2023-08-14</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Dec 08 2024 15:00:05 GMT+0800"
+                >2024-12-08 15:00:05</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/Hexo/">Hexo</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Hexo/">Hexo</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E5%BC%82%E5%B8%B8/">异常</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%BC%82%E5%B8%B8/">异常</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/GitHub/">GitHub</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/GitHub/">GitHub</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2023/08/14/hexo-trouble-shooting/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2023/08/14/hexo-trouble-shooting/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2023/08/14/development-environment-for-userscript/">
-                        油猴脚本开发环境搭建
-                    </a>
-                </h3>
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2023/08/14/development-environment-for-userscript/">
+                            油猴脚本开发环境搭建
+                        </a>
+                    </h3>
 
-                <div class="home-article-content markdown-body">
-                    
-                        <p>在油猴脚本的浏览器扩展中直接编写脚本并不是最佳的开发模式，除了将开发中的脚本在扩展中用@require关键字进行引用后，用VS Code等编辑器进行开发。本文更进一步，在UglifyJS的支持下提升开发体验。
-                    
-                </div>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>在油猴脚本的浏览器扩展中直接编写脚本并不是最佳的开发模式，除了将开发中的脚本在扩展中用@require关键字进行引用后，用VS Code等编辑器进行开发。本文更进一步，在UglifyJS的支持下提升开发体验。
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Aug 14 2023 20:26:43 GMT+0800">2023-08-14</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Dec 08 2024 15:00:05 GMT+0800"
+                >2024-12-08 15:00:05</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/%E6%B2%B9%E7%8C%B4%E8%84%9A%E6%9C%AC/">油猴脚本</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E6%B2%B9%E7%8C%B4%E8%84%9A%E6%9C%AC/">油猴脚本</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/VS-Code/">VS Code</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/VS-Code/">VS Code</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/UglifyJS/">UglifyJS</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/UglifyJS/">UglifyJS</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/">自动构建</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/">自动构建</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2023/08/14/development-environment-for-userscript/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2023/08/14/development-environment-for-userscript/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2022/10/18/execute-after-ajax-complete/">
-                        如何在Ajax请求执行完毕后再运行代码
-                    </a>
-                </h3>
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2022/10/18/execute-after-ajax-complete/">
+                            如何在Ajax请求执行完毕后再运行代码
+                        </a>
+                    </h3>
 
-                <div class="home-article-content markdown-body">
-                    
-                        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我们都知道，Ajax是以异步方式从服务器取回数据并在页面上进行动态更新。但有时我们会遇到程序后续的操作依赖于前面Ajax的结果，这时一种简陋的方法是用同步方式发起请求。但这既违背了Ajax的初衷，同时在处理较多数据时也会造成浏览器假死，甚至被浏览器弹窗告警。我认为这种方式只能在获取数据量或发起的Ajax请求数量已知且较少的情况下使用。在ES6的时代，我们可以使用await&#x2F;async方法来完美解决。
-                    
-                </div>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我们都知道，Ajax是以异步方式从服务器取回数据并在页面上进行动态更新。但有时我们会遇到程序后续的操作依赖于前面Ajax的结果，这时一种简陋的方法是用同步方式发起请求。但这既违背了Ajax的初衷，同时在处理较多数据时也会造成浏览器假死，甚至被浏览器弹窗告警。我认为这种方式只能在获取数据量或发起的Ajax请求数量已知且较少的情况下使用。在ES6的时代，我们可以使用await&#x2F;async方法来完美解决。
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Tue Oct 18 2022 21:59:46 GMT+0800">2022-10-18</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Dec 08 2024 15:00:05 GMT+0800"
+                >2024-12-08 15:00:05</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/JQuery/">JQuery</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/JQuery/">JQuery</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/Ajax/">Ajax</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Ajax/">Ajax</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E5%BC%82%E6%AD%A5/">异步</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%BC%82%E6%AD%A5/">异步</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2022/10/18/execute-after-ajax-complete/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2022/10/18/execute-after-ajax-complete/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2022/08/20/dmake/">
-                        dmake，一个文档编译工具
-                    </a>
-                </h3>
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2022/08/20/dmake/">
+                            dmake，一个文档编译工具
+                        </a>
+                    </h3>
 
-                <div class="home-article-content markdown-body">
-                    
-                        <p>工作中被反复修改的文档搞破防了。这些文档有一个特点，就是同一段文字会多次出现在一个或者多个.docx文件中。于是在破防之余，开发了这个dmake工具，用于从Markdown文件编译生成需要的.docx文件。
-                    
-                </div>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>工作中被反复修改的文档搞破防了。这些文档有一个特点，就是同一段文字会多次出现在一个或者多个.docx文件中。于是在破防之余，开发了这个dmake工具，用于从Markdown文件编译生成需要的.docx文件。
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Sat Aug 20 2022 21:33:15 GMT+0800">2022-08-20</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Feb 16 2025 00:07:52 GMT+0800"
+                >2025-02-16 00:07:52</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/">自动生成</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/">自动生成</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/makefile/">makefile</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/makefile/">makefile</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E6%A8%A1%E6%9D%BF/">模板</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E6%A8%A1%E6%9D%BF/">模板</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2022/08/20/dmake/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2022/08/20/dmake/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2022/06/11/solution-to-slow-win7-on-virtual-box/">
-                        VirtualBox中Windows7虚拟机运行缓慢的解决办法
-                    </a>
-                </h3>
+                <div class="home-post-item-bottom border-box">
+                    
+                    <h3 class="home-post-title border-box">
+                        <a href="/2022/06/11/solution-to-slow-win7-on-virtual-box/">
+                            VirtualBox中Windows7虚拟机运行缓慢的解决办法
+                        </a>
+                    </h3>
 
-                <div class="home-article-content markdown-body">
-                    
-                        <p>两三年之前装过一个32位的Windows XP，那时虚拟机用的还是VirtualBox 5.1.x，运行上无任何问题，十分流畅，虚拟机的屏幕分辨率也可以达到2K。最近需要安装一个Windows 7的虚拟机，心想跟以前安装的也不会有什么区别，怎料想这个64位的Windows 7虚拟机着实折腾了我两三天。其中查阅了好些博客，最终还是在VirtualBox的官方论坛上找到了原因和解决办法。
-                    
-                </div>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <p>两三年之前装过一个32位的Windows XP，那时虚拟机用的还是VirtualBox 5.1.x，运行上无任何问题，十分流畅，虚拟机的屏幕分辨率也可以达到2K。最近需要安装一个Windows 7的虚拟机，心想跟以前安装的也不会有什么区别，怎料想这个64位的Windows 7虚拟机着实折腾了我两三天。其中查阅了好些博客，最终还是在VirtualBox的官方论坛上找到了原因和解决办法。
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Sat Jun 11 2022 10:33:56 GMT+0800">2022-06-11</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Feb 16 2025 00:07:52 GMT+0800"
+                >2025-02-16 00:07:52</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/VirtualBox/">VirtualBox</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/VirtualBox/">VirtualBox</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/Virtual-Machine/">Virtual Machine</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Virtual-Machine/">Virtual Machine</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/Hyper-V/">Hyper-V</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Hyper-V/">Hyper-V</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2022/06/11/solution-to-slow-win7-on-virtual-box/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2022/06/11/solution-to-slow-win7-on-virtual-box/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2022/06/08/take-screenshot-via-nodejs/">
-                        使用NodeJS进行截图
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
+                <div class="home-post-item-bottom border-box">
                     
-                        <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>工作中，产生了这样一个需求：想要访问一个网站，并在3个及以上的URL下全屏截图保存到本地。初步了解了一下这方面的现成方案：</p>
+                    <h3 class="home-post-title border-box">
+                        <a href="/2022/06/08/take-screenshot-via-nodejs/">
+                            使用NodeJS进行截图
+                        </a>
+                    </h3>
+
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>工作中，产生了这样一个需求：想要访问一个网站，并在3个及以上的URL下全屏截图保存到本地。初步了解了一下这方面的现成方案：</p>
 <ol>
 <li>使用Chrome –headless</li>
 <li>使用puttepeer，这是方案1的进阶版</li>
 </ol>
 <p>但是很可惜，经过进一步的与对方沟通，他们要求不仅是把网页截图下来，还需要把浏览器，包括地址栏都要截取下来，防止上级部门怪罪下来说他们伪造截图。这样上面的两种方法就都行不通了——它们都只能截取网页本身，也就是<code>&lt;html&gt;  …… &lt;/html&gt;</code>标签之间，渲染后的图片。<br>想着本来都已经把puttepeer安装上了，也懒得转Python了，索性就NodeJS三两下搞定吧。
-                    
-                </div>
+                        
+                    </div>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Wed Jun 08 2022 20:13:55 GMT+0800">2022-06-08</span></span>
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
         
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Dec 08 2024 15:00:05 GMT+0800"
+                >2024-12-08 15:00:05</span>
+            </span>
         
-            <span class="home-article-tag">
-                <i class="fas fa-tags"></i>&nbsp;
-                <ul>
+
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
                     
-                        <li>
-                            
-                            <a href="/tags/NodeJS/">NodeJS</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/NodeJS/">NodeJS</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E6%88%AA%E5%9B%BE/">截图</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E6%88%AA%E5%9B%BE/">截图</a></li>
+                        
                     
-                        <li>
-                            | 
-                            <a href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a>&nbsp;
-                        </li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a></li>
+                        
                     
                 </ul>
             </span>
         
+
+        
+        
+        
+        
     </div>
 
-    <a href="/2022/06/08/take-screenshot-via-nodejs/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2022/06/08/take-screenshot-via-nodejs/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
-            <li class="home-article-item">
+            <li class="home-post-item">
 
                 
 
-                <h3 class="home-article-title">
-                    <a href="/2022/06/06/hello-world/">
-                        Hello World
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
+                <div class="home-post-item-bottom border-box">
                     
-                        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, yo...
-                    
-                </div>
+                    <h3 class="home-post-title border-box">
+                        <a href="/2022/06/06/hello-world/">
+                            Hello World
+                        </a>
+                    </h3>
 
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fas fa-history"></i>&nbsp;<span class="home-article-date" data-date="Mon Jun 06 2022 22:44:20 GMT+0800">2022-06-06</span></span>
+                    <div class="home-post-content keep-markdown-body">
+                        
+                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, yo...
+                        
+                    </div>
+
+                    
+
+<div class="post-meta-info-container border-box home">
+    <div class="post-meta-info border-box">
+        
+            <span class="meta-info-item border-box">
+                <i class="icon fa-solid fa-history"></i>&nbsp;<span class="home-post-history"
+                                                                                data-updated="Sun Dec 08 2024 16:01:48 GMT+0800"
+                >2024-12-08 16:01:48</span>
+            </span>
+        
+
+        
+
+        
+
+        
+
+        
+        
         
         
     </div>
 
-    <a href="/2022/06/06/hello-world/">阅读全文&nbsp;<i class="fas fa-angle-right"></i></a>
+    
+        <a class="home-read-more" href="/2022/06/06/hello-world/">阅读全文&nbsp;<i class="icon fas fa-angle-right"></i></a>
+    
 </div>
 
+                </div>
             </li>
         
     </ul>
-
-    <div class="home-paginator">
-        <div class="paginator">
     
 
-    
-</div>
 
-    </div>
+
 </div>
 
 
                 
             </div>
-
         </div>
 
-        <div class="page-main-content-bottom">
-            <footer class="footer">
-    <div class="info-container">
-        <div class="copyright-info info-item">
-            &copy;
+        <div class="page-main-content-bottom border-box">
             
-              <span>2020</span>
-              -
-            
-            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Tsccai</a>
-        </div>
-        
-        <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
-        </div>
-        
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Tsccai</a>
         
     </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+
+    
 </footer>
 
         </div>
     </div>
 
+    <!-- post tools -->
     
 
-    <div class="right-bottom-side-tools">
-        <div class="side-tools-container">
-    <ul class="side-tools-list">
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box side-tools-show-handle">
+    <ul class="side-tools-list side-tools-show-handle border-box">
         <li class="tools-item tool-font-adjust-plus flex-center">
             <i class="fas fa-search-plus"></i>
         </li>
@@ -637,110 +902,109 @@
             <i class="fas fa-search-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fas fa-arrows-alt-h"></i>
-        </li>
-
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fas fa-moon"></i>
-        </li>
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
 
         <!-- rss -->
         
 
-        
-            <li class="tools-item tool-scroll-to-top flex-center">
-                <i class="fas fa-arrow-up"></i>
-            </li>
-        
-
+        <!-- to bottom -->
         <li class="tools-item tool-scroll-to-bottom flex-center">
             <i class="fas fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
+    <ul class="exposed-tools-list border-box">
+        
+
+        
+
         <li class="tools-item tool-toggle-show flex-center">
             <i class="fas fa-cog fa-spin"></i>
         </li>
-        
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
     </ul>
 </div>
 
     </div>
 
-    
-
-    <div class="image-viewer-container">
-    <img src="">
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
 </div>
 
 
-    
-        <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-          <span class="search-input-field-pre">
-            <i class="fas fa-keyboard"></i>
-          </span>
-            <div class="search-input-container">
-                <input autocomplete="off"
-                       autocorrect="off"
-                       autocapitalize="off"
-                       placeholder="搜索..."
-                       spellcheck="false"
-                       type="search"
-                       class="search-input"
-                >
-            </div>
-            <span class="popup-btn-close">
-                <i class="fas fa-times"></i>
-            </span>
-        </div>
-        <div id="search-result">
-            <div id="no-result">
-                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
-            </div>
-        </div>
-    </div>
-</div>
-
+    <!-- local search -->
     
 
+    <!-- tablet toc -->
+    
 </main>
 
 
 
 
 
-<script src="/js/utils.js"></script>
 
-<script src="/js/main.js"></script>
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
 
 <script src="/js/header-shrink.js"></script>
 
 <script src="/js/back2top.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
 
 
+<!-- local search -->
+
+
+<!-- lazyload -->
+
+
+<div class="">
+    <!-- home page -->
+    
+        
+<script src="/js/page/home-page.js"></script>
 
     
-<script src="/js/local-search.js"></script>
 
-
-
-
+    <!-- post page -->
     
-<script src="/js/code-copy.js"></script>
 
+    <!-- categories page -->
+    
 
+    <!-- links page -->
+    
 
+    <!-- photos page -->
+    
 
-
-<div class="post-scripts">
+    <!-- tools page -->
     
 </div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
 
 
 
