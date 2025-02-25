@@ -349,4 +349,15 @@
         <tag>WoL</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CTF笔记 02 - 使用wireshark导出报文流量中的二进制文件</title>
+    <url>/2025/02/25/ctf-notes-02-export-binary-file-with-wireshark/</url>
+    <content><![CDATA[<p>遇到这样一个题，离线流量分析，据说是菜刀的后门流量。不过最终做下来发现考察点主要是二进制文件的导出。<span id="more"></span><br>首先拿到报文，搜索字符串flag或ctf，并无任何发现。再检查协议，发现数据量较大的是http，于是过滤出所有http报文，发现数量并不多，且都为post请求和服务器响应。查看各个请求，发现都是Base64编码的查询参数，还都是在执行eval函数，一看就是在干坏事。懒得去逐个解码，于是索性看服务器的明文响应。<br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/01.png"  alt="alt text"><br>前几个都是列出目录（No.60之前的POST请求）<br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/02.png"  alt="alt text"><br>而No.60的请求从参数来看像是在请求hello.rar这个文件。在该帧报文上进行HTTP流追踪，可以看到这一次请求和响应。<br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/03.png"  alt="alt text"><br>注意到响应的数据中似乎是一个rar文件，而且有rar文件的文件头，但前面有一些多余字节。查看该帧报文，发现是HTTP-chunked即分块传输，那么就需要导出对象，而不是直接另存字节流，原因是分块传输中，每一个数据块前还有块大小等控制字符，不属于数据。<br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/04.png"  alt="alt text"><br>但导出后发现还是不能打开，winrar报错。用十六进制编辑器打开，发现导出的第一个分块的数据中有3个无关字节，把这3个字节删除后保存，压缩文件就可以打开了。<br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/05.png"  alt="alt text"><br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/06.png"  alt="alt text"><br>但压缩包里的图片只有一半信息，还需要继续寻找另一半flag。注意到No.233帧报文，发送的请求中z2参数是16进制字节（Base16编码），跟其他的Base64编码很不一样。再看到这一帧报文前后的列目录命令，服务器多返回了一个world.png，可以猜想No.233帧报文向服务器上传了一个world.png图片。那么把这一帧报文的数据提取出来写入文件即可。<br>这里有一个注意事项，我使用的是VS Code的官方16进制编辑器插件，我先新建了一个world.png空文件，然后直接粘贴。结果图片还是打不开。这里需要以16进制打开，粘贴时选择HEX模式才可以正确粘贴，以下是正确的做法。<br><img   src="/2024/12/08/capture-packet-with-vlan-in-wireshark/ireshark/07.gif"  alt="alt text"></p>
+]]></content>
+      <tags>
+        <tag>Wireshark</tag>
+        <tag>CTF</tag>
+        <tag>HTTP Chunked</tag>
+      </tags>
+  </entry>
 </search>
